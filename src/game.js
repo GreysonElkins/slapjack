@@ -1,4 +1,6 @@
 // players save to local.storage, game can check local storage and recieve them
+const Player = require('../src/player');
+
 class Game {
   constructor() {
     this.player1 = new Player("1", this);
@@ -247,11 +249,20 @@ class Game {
       console.log('Uh-oh!')
     } else if (player.hailMary == true) {
       this.togglePlayer(player).winCount++;
+      player.hailMary = false;
+      declareWinner(player);
       console.log("you lose!")
     } else if (player.hand == 0) {
       player.hailMary = true;
       console.log("one more chance!")
     }
+  }
+
+  declareWinner(player) {
+    var winner = this.togglePlayer(player)
+    winner.winCount ++;
+    this.resetDeck();
+    return winner
   }
 }
 
