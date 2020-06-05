@@ -1,0 +1,25 @@
+{
+  "name": "slapjack",
+  "version": "1.0.0",
+  "description": "A playing card game",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GreysonElkins/slapjack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GreysonElkins/slapjack/issues"
+  },
+  "homepage": "https://github.com/GreysonElkins/slapjack#readme",
+  "dependencies": {
+    "time-stamp": "^2.2.0"
+  }
+}
