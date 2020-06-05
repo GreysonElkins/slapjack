@@ -1,8 +1,8 @@
 // players save to local.storage, game can check local storage and recieve them
 class Game {
   constructor() {
-    this.player1 = new Player("1");
-    this.player2 = new Player("2");
+    this.player1 = new Player("1", this);
+    this.player2 = new Player("2", this);
     this.deck = [
       {type: "ace",
       suit: "blue",
@@ -161,15 +161,72 @@ class Game {
       suit: "red",
       src: "./assets/red-king.png"},
     ];
-    this.wild = {type: "wild",
+    this.wildCard = {type: "wild",
     suit: "wild",
     src: "./assets/wild.png"};
+    this.centerPile = [];
+    this.turnTracker = this.player1;
   }
-  shuffle() {
-    for (var i = 0; i < this.deck.length; i++) {
-    var randomDigit = Math.floor(Math.random() *52);
-    this.deck.unshift(this.deck.splice(randomDigit, 1)) //seems to sometimes unshift an array with the object in it, instead of just the object. 
+  shuffle(cards) {
+    for (var i = 0; i < cards.length; i++) {
+    var randomDigit = Math.floor(Math.random() * cards.length);
+    cards.splice(randomDigit, 0, cards.shift());
+    }
   }
+  movePlayersCard() {
+    this.centerPile.unshift(this.turnTracker.playCard());
+    this.turnTracker = this.togglePlayer(this.turnTracker);
+  }
+  //THIS CAN RUN WITHOUT CARDS IN A PLAYERS HAND
+  dealCards() {
+    var currentDeck = this.deck.length;
+    for (var i = 0; i < currentDeck; i++){
+      if (i % 2 == 0) {
+        this.player2.hand.push(this.deck.shift());
+      } else {
+        this.player1.hand.push(this.deck.shift());
+      }
+    }
+  }
+  togglePlayer(player) {
+    if (player = this.player1) {
+      return this.player2;
+    } else {
+      return this.player1;
+    }
+  }
+  resetDeck() {
+    this.deck = this.player1.hand.concat(this.player2.hand.concat(centerPile));
+    //do we need to concat the centerPile?
+    this.shuffle(this.deck);
+    this.player1.hand = [];
+    this.player2.hand = [];
+    this.centerPile = [];
+
+    this.player1.hailMary = 0;
+    this.player2.hailMary = 0;
+  }
+  slap(player) {
+    if (this.centerPile[0].type == this.centerPile[1].type ||
+      this.centerPile[0].type == this.centerPile[2].type ||
+      this.centerPile[0].type == "jack") {
+        player.hand = player.hand.concat(this.centerPile);
+        this.centerPile = [];
+        this.shuffle(player.hand);
+        player.hailMary = false;
+      } else {
+        this.badPlay(player);
+      }
+  }
+  badPlay(player) {
+    if (player.hand.length > 0) {
+      this.togglePlayer(player).hand.unshift(player.hand[0]);
+      player.hand.splice(0, 1);
+    } else if (player.hailMary == true) {
+      this.togglePlayer(player).winCount++;
+    } else if (player.hand == 0) {
+      player.hailMary = true;
+    }
   }
 }
 
