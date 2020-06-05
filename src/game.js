@@ -192,33 +192,41 @@ class Game {
   }
 
   movePlayersCard(player) {
-    if (this.whoseTurn == player) {
+    if (player == this.whoseTurn) {
       this.centerPile.unshift(player.playCard());
       this.whoseTurn = this.togglePlayer(player);
     }
   }
   //THIS CAN RUN WITHOUT CARDS IN A PLAYERS HAND
   togglePlayer(player) {
-    if (player == this.player1) {
+    if (player == this.player1 && this.player2.hailMary == false) {
       return this.player2;
-    } else {
+    } else if (player == this.player1) {
       return this.player1;
+    }
+    if (player == this.player2 && this.player1.hailMary == false) {
+      return this.player1;
+    } else if (player == this.player2) {
+      return this.player2;
     }
   }
 
   resetDeck() {
-    this.deck = this.player1.hand.concat(this.player2.hand.concat(centerPile));
+    this.deck = this.player1.hand.concat(this.player2.hand.concat(this.centerPile));
     //do we need to concat the centerPile?
     this.shuffle(this.deck);
     this.player1.hand = [];
     this.player2.hand = [];
     this.centerPile = [];
 
-    this.player1.hailMary = 0;
-    this.player2.hailMary = 0;
+    this.player1.hailMary = false;
+    this.player2.hailMary = false;
   }
 
   slap(player) {
+    if (this.centerPile.length < 0) {
+      return
+    }
     if (this.centerPile[0].type == this.centerPile[1].type ||
       this.centerPile[0].type == this.centerPile[2].type ||
       this.centerPile[0].type == "jack") {
@@ -236,13 +244,16 @@ class Game {
     if (player.hand.length > 0) {
       this.togglePlayer(player).hand.push(player.hand[0]);
       player.hand.splice(0, 1);
+      console.log('Uh-oh!')
     } else if (player.hailMary == true) {
       this.togglePlayer(player).winCount++;
+      console.log("you lose!")
     } else if (player.hand == 0) {
       player.hailMary = true;
+      console.log("one more chance!")
     }
   }
 }
 
 
-// module.exports = Game;
+module.exports = Game;
