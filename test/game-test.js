@@ -107,5 +107,4 @@ it.skip('can reset the deck and players when a game is won', () => {
     assert.equal (game.deck.length, 5);
     assert.deepEqual (player1.hand, []);
   });
-
 });
