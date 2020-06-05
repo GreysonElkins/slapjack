@@ -16,7 +16,7 @@ describe('Player', () => {
   it('should start with no wins', () => {
     const player = new Player("1");
 
-    assert.equal(player.wins, 0);
+    assert.equal(player.winCount, 0);
   });
 
   it('should start with an empty hand', () => {
