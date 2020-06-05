@@ -1,18 +1,17 @@
+var game = new Game();
+
+window.onload = game.setGame();
 
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(event) {
   if (event.which == 81) {
-    //player 1 play card
-    console.log("Q");
+    game.movePlayersCard(game.player1);
   } else if (event.which == 70) {
-    //player 1 slap
-    console.log("F")
+    game.slap(game.player1);
   } else if (event.which == 80) {
-    //player 2 play card
-    console.log("P")
+    game.movePlayersCard(game.player2);
   } else if (event.which == 74) {
-    //player 2 slap
-    console.log("J")
+    game.slap(game.player2);
   }
 }
