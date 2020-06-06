@@ -28,14 +28,10 @@ h1 {
   width: 20em;
   /* height: 32em; */
 }
-.facedown-card,
-.faceup-card,
+
 .center-pile {
   width: 20em;
   /* height: 28em; */
-}
-.facedown-card {
-  background-color: #FFF;
 }
 
 #player1wins,
@@ -55,6 +51,3 @@ img {
 .player-2-hand > img {
   box-shadow: 0 0 13px 0px #FFD23F;
 }
-
-
-/* */
