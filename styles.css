@@ -10,12 +10,12 @@ body {
 }
 h1 {
   color: #FFF;
-  font-size: 4em;
+  font-size: 3em;
   text-align: center;
 
 }
 .playing-field {
-  margin-top: 1.5em;
+  margin-top: 1.2em;
   display: flex;
   justify-content: space-around;
 }
@@ -37,12 +37,12 @@ h1 {
 #player1wins,
 #player2wins {
   color: #FFF;
-  font-size: 1.5em;
+  font-size: 1.2em;
   text-align:center;
 }
 img {
   border-radius: 30px;
-  width: 20em;
+  width: 18em;
 }
 
 .player-1-hand > img {
