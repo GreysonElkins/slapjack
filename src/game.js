@@ -1,5 +1,5 @@
 // players save to local.storage, game can check local storage and recieve them
-const Player = require('../src/player');
+// const Player = require('../src/player');
 
 class Game {
   constructor() {
@@ -194,8 +194,12 @@ class Game {
   }
 
   movePlayersCard(player) {
-    if (player == this.whoseTurn) {
+    if (player == this.whoseTurn && player.hand.length > 1) {
       this.centerPile.unshift(player.playCard());
+      this.whoseTurn = this.togglePlayer(player);
+    } else if (player == this.whoseTurn && player.hand.length === 1) {
+      this.centerPile.unshift(player.playCard());
+      player.hailMary = true;
       this.whoseTurn = this.togglePlayer(player);
     }
   }
@@ -203,19 +207,18 @@ class Game {
   togglePlayer(player) {
     if (player == this.player1 && this.player2.hailMary == false) {
       return this.player2;
-    } else if (player == this.player1) {
+    } else if (player == this.player1 && this.player2.hailMary == true) {
       return this.player1;
     }
     if (player == this.player2 && this.player1.hailMary == false) {
       return this.player1;
-    } else if (player == this.player2) {
+    } else if (player == this.player2 && this.player1.hailMary == true) {
       return this.player2;
     }
   }
 
   resetDeck() {
     this.deck = this.player1.hand.concat(this.player2.hand.concat(this.centerPile));
-    //do we need to concat the centerPile?
     this.shuffle(this.deck);
     this.player1.hand = [];
     this.player2.hand = [];
@@ -226,12 +229,12 @@ class Game {
   }
 
   slap(player) {
-    if (this.centerPile.length < 0) {
-      return
-    }
-    if (this.centerPile[0].type == this.centerPile[1].type ||
-      this.centerPile[0].type == this.centerPile[2].type ||
-      this.centerPile[0].type == "jack") {
+    // if (this.centerPile[0] == undefined) {
+    //   return
+    // }
+    if (this.centerPile[0].type == "jack" ||
+      this.centerPile[0].type == this.centerPile[1].type ||
+      this.centerPile[0].type == this.centerPile[2].type) {
         player.hand = (player.hand.concat(this.centerPile));
         this.centerPile = [];
         this.shuffle(player.hand);
@@ -248,15 +251,26 @@ class Game {
       player.hand.splice(0, 1);
       console.log('Uh-oh!')
     } else if (player.hailMary == true) {
-      this.togglePlayer(player).winCount++;
       player.hailMary = false;
-      declareWinner(player);
+      this.declareWinner(player);
       console.log("you lose!")
-    } else if (player.hand == 0) {
+    } else if (player.hand === []) {
       player.hailMary = true;
       console.log("one more chance!")
     }
   }
+
+  // checkWin(player) {
+  //   if (this.togglePlayer(player).hand === [] &&
+  //   this.togglePlayer(player).hailMary == false) {
+  //     this.togglePlayer(player).hailMary = true;
+  //   } else if (this.togglePlayer(player).hand === [] &&
+  //   this.togglePlayer(player).hailMary == true) {
+  //     this.togglePlayer(player).hailMary == false;
+  //     console.log(`player ${player.id} loses!`)
+  //     declareWinnder(player);
+  //   }
+  // }
 
   declareWinner(player) {
     var winner = this.togglePlayer(player)
@@ -267,4 +281,4 @@ class Game {
 }
 
 
-module.exports = Game;
+// module.exports = Game;
