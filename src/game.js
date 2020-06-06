@@ -275,6 +275,7 @@ class Game {
   declareWinner(player) {
     var winner = this.togglePlayer(player)
     winner.winCount ++;
+    winner.saveWinsToStorage();
     this.resetDeck();
     return winner
   }

@@ -1,0 +1,60 @@
+* {
+  font-family: 'Abel', sans-serif;
+}
+body {
+  margin: 0em;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  background-color: #9D5C63;
+}
+h1 {
+  color: #FFF;
+  font-size: 4em;
+  text-align: center;
+
+}
+.playing-field {
+  margin-top: 1.5em;
+  display: flex;
+  justify-content: space-around;
+}
+.center-field,
+.player-1-hand,
+.player-2-hand, {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  width: 20em;
+  /* height: 32em; */
+}
+.facedown-card,
+.faceup-card,
+.center-pile {
+  width: 20em;
+  /* height: 28em; */
+}
+.facedown-card {
+  background-color: #FFF;
+}
+
+#player1wins,
+#player2wins {
+  color: #FFF;
+  font-size: 1.5em;
+  text-align:center;
+}
+img {
+  border-radius: 30px;
+  width: 20em;
+}
+
+.player-1-hand > img {
+  box-shadow: 0 0 13px 0px #009FB7;
+}
+.player-2-hand > img {
+  box-shadow: 0 0 13px 0px #FFD23F;
+}
+
+
+/* */
