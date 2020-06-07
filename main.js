@@ -20,6 +20,8 @@ function handleKeydown(event) {
     currentPlayer = game.player1;
   } else if (keypress == 80 || keypress == 74) {
     currentPlayer = game.player2;
+  } else if (keypress == 66) {
+    game.addWild();
   }
   gameHandler(keypress);
 }

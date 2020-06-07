@@ -205,6 +205,19 @@ class Game {
 
     this.setGame();
   }
+
+  addWild() {
+    var randomPlayerNumber = Math.floor(Math.random() * 2);
+    cards.splice(randomDigit, 0, cards.shift());
+
+    if (randomPlayerNumber = 1) {
+      this.player1.hand.push(this.wildCard);
+      shuffle(this.player2.hand);
+    } else {
+      this.player2.hand.push(this.wildCard);
+      shuffle(this.player2.hand);
+    }
+  }
 //player moves
   movePlayersCard(player) {
     if (this.player1.hailMary && this.player2.hailMary) {
@@ -253,7 +266,6 @@ class Game {
   }
 
   badPlay(player) {
-    debugger
     if (player.hailMary == true) {
       this.declareWinner(player, "opponent")
     } else if (player.hand.length > 1) {
@@ -270,7 +282,7 @@ class Game {
   findOpponent(player) {
     if (player == this.player1) {
       return this.player2;
-    } else if (player == this.player2) {
+    } else {
       return this.player1;
     }
   }
