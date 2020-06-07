@@ -3,6 +3,9 @@
 }
 
 body {
+  background-image: url("./assets/background.png");
+  /* background-repeat: repeat-x; */
+  background-size: 128% 128%;
   margin: 0em;
   display: flex;
   flex-direction: column;
@@ -18,7 +21,7 @@ header {
 }
 
 h1 {
-  color: #FFF;
+  color: #5C415D;
   font-size: 3em;
   text-align: center;
   margin: 0em;
@@ -58,7 +61,7 @@ p > #player2wins{
 }
 
 p {
-  color: #FFF;
+  color: #5C415D;
   font-size: 1.2em;
   text-align:center;
 }
@@ -69,11 +72,11 @@ img {
 }
 
 .player-1-hand > img {
-  box-shadow: 0 0 13px 0px #009FB7;
+  box-shadow: 0 0 13px 0px #06D6A0;
 }
 
 .player-2-hand > img {
-  box-shadow: 0 0 13px 0px #FFD23F;
+  box-shadow: 0 0 13px 0px #EF476F;
 }
 
 .hidden {
