@@ -44,8 +44,8 @@ h1 {
 }
 
 .game-info {
-  display: flex;
-  justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 }
 
 p > #player1wins{
@@ -54,6 +54,19 @@ p > #player1wins{
 
 p > #player2wins{
   margin: 1em 0em 0em 18em;
+}
+
+.player-1-info,
+.player-2-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 10em;
+  text-shadow: 1px 1px 5px #ffffff
+}
+
+.player-1-info {
+  padding-right: 30em;
 }
 
 .center-pile {

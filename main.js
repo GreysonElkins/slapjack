@@ -3,8 +3,14 @@ var pageCenterPile = document.querySelector('.center-pile')
 var h1 = document.querySelector('h1');
 var currentPlayer;
 
-window.onload = game.setGame();
-window.onload = recallStorage();
+window.onload = startUp();
+
+
+function startUp() {
+  game.setGame();
+  recallStorage();
+  handCount();
+}
 
 window.addEventListener('keydown', handleKeydown);
 
@@ -24,10 +30,12 @@ function gameHandler(keypress) {
     hideText();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
+    handCount();
   } else if (keypress == 70 || keypress == 74) {
     game.slap(currentPlayer);
     removePile();
     textToScreen();
+    handCount();
   }
 }
 
@@ -93,4 +101,11 @@ function recallStorage() {
     document.getElementById(whichPlayer).innerText = `${storage || 0} Wins`;
   }
 }
+
+function handCount(info) {
+    document.getElementById('player1count').innerText = `${game.player1.hand.length} cards`;
+
+    document.getElementById('player2count').innerText = `${game.player2.hand.length} cards`;
+}
+
 //
