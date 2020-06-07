@@ -4,6 +4,7 @@ var h1 = document.querySelector('h1');
 var currentPlayer;
 
 window.onload = game.setGame();
+window.onload = recallStorage();
 
 window.addEventListener('keydown', handleKeydown);
 
@@ -33,7 +34,7 @@ function gameHandler(keypress) {
 function showCenterCard() {
   var color;
 
-  if (game.whoseTurn.id == "1") {
+  if (game.whoseTurn.id == "Player 1") {
     color = "#FFD23F";
   } else {
     color = "#009FB7";
@@ -68,13 +69,30 @@ function showOrHideHand(){
   }
 }
 
-//IF OPPONENT SLAPS WHILE YOU HAVE A HAIL MARY, WILL THEY WIN?
 function textToScreen() {
   h1.innerText = `${game.message}`;
   h1.classList.remove('hidden');
+
+  if (game.message.includes('win')) {
+    gameOver();
+  }
 }
 
 function hideText() {
   h1.classList.add('hidden');
+}
+
+function recallStorage() {
+  var newPlayer = `0`
+  var whichPlayer;
+
+  for (i = 1; i < 3; i++) {
+    var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
+    whichPlayer = `player${i}wins`;
+
+    document.getElementById(whichPlayer).innerText = `${storage || 0} Wins`;
+    
+    console.log (`${storage || 0} Wins`);
+  }
 }
 //

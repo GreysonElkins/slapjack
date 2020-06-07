@@ -5,10 +5,13 @@ class Player {
     this.hand = [];
     this.hailMary = false;
   }
+
   playCard() {
     return this.hand.shift();
   }
+
   saveWinsToStorage() {
+    localStorage.setItem(`${this.id}`, JSON.stringify(this.winCount));
   }
 }
 
