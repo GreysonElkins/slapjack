@@ -34,10 +34,10 @@ function gameHandler(player, keypress) {
 function showCard(player) {
   var color;
 
-  if (game.whoseTurn == "1") {
-    color = "#009FB7";
+  if (game.whoseTurn.id == "1") {
+    color = "#FFD23F";
   } else {
-    color = "#fFD23F";
+    color = "#009FB7";
   }
 
   if (game.centerPile[0] !== undefined) {
@@ -65,13 +65,22 @@ function wipeHand(player){
   }
 }
 
+function showHand(player){
+  if (player.hand[0] !== undefined) {
+    document.querySelector(`#player-${player.id}`).classList.remove('hidden');
+  }
+}
+//IF OPPONENT SLAPS WHILE YOU HAVE A HAIL MARY, WILL THEY WIN?
 function textToScreen(player){
   if (game.message == 'SLAPJACK!' ||
   game.message == 'SANDWHICH!' ||
   game.message == 'DOUBLE!') {
     h1.innerText = `${game.message} Player ${player.id} takes the pile!`
+    showHand(player)
   } else if (game.message == "foul") {
     h1.innerText = `BAD SLAP! Player ${player.id} foreits a card to Player ${player.opponent}!`
+    showHand(game.togglePlayer(player));
+    //
   } else if (game.message == "win") {
     h1.innerText = `${player.opponent} wins!`
   }

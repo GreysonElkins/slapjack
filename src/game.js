@@ -1,10 +1,9 @@
 // players save to local.storage, game can check local storage and recieve them
-// const Player = require('../src/player');
 
 class Game {
   constructor() {
-    this.player1 = new Player("1", this);
-    this.player2 = new Player("2", this);
+    this.player1 = new Player("1");
+    this.player2 = new Player("2");
     this.deck = [
       {type: "ace",
       suit: "blue",
@@ -204,7 +203,7 @@ class Game {
       this.whoseTurn = this.togglePlayer(player);
     }
   }
-  //THIS CAN RUN WITHOUT CARDS IN A PLAYERS HAND
+
   togglePlayer(player) {
     if (player == this.player1 && this.player2.hailMary == false) {
       return this.player2;
@@ -230,9 +229,7 @@ class Game {
   }
 
   slap(player) {
-    // if (this.centerPile[0] == undefined) {
-    //   return
-    // }
+
     if (this.centerPile[0].type == "jack"){
       this.takeHand(player);
       this.message = 'SLAPJACK!';
@@ -248,43 +245,46 @@ class Game {
     }
   }
 
+  checkWin(player){
+    debugger
+    var opponent = this.togglePlayer(player)
+    if (opponent.hailMary == true){
+      opponent.hailMary = false;
+      this.declareWinner(player, "self");
+    }
+  }
+
   takeHand(player) {
     player.hand = (player.hand.concat(this.centerPile));
     this.centerPile = [];
     this.shuffle(player.hand);
     player.hailMary = false;
+    this.checkWin(player);
   }
 
   badPlay(player) {
     if (player.hand.length > 0) {
       this.togglePlayer(player).hand.push(player.hand[0]);
+      this.togglePlayer(player).hailMary = false;
       player.hand.splice(0, 1);
     } else if (player.hailMary == true) {
       player.hailMary = false;
-      this.declareWinner(player);
+      this.declareWinner(player, "opponent");
     } else if (player.hand === []) {
       player.hailMary = true;
     }
   }
 
-  // checkWin(player) {
-  //   if (this.togglePlayer(player).hand === [] &&
-  //   this.togglePlayer(player).hailMary == false) {
-  //     this.togglePlayer(player).hailMary = true;
-  //   } else if (this.togglePlayer(player).hand === [] &&
-  //   this.togglePlayer(player).hailMary == true) {
-  //     this.togglePlayer(player).hailMary == false;
-  //     console.log(`player ${player.id} loses!`)
-  //     declareWinnder(player);
-  //   }
-  // }
-
-  declareWinner(player) {
-    var winner = this.togglePlayer(player)
+  declareWinner(player, won) {
+    var winner;
+    if (won == "opponent") {
+      winner = this.togglePlayer(player)
+    } else {
+      winner = player;
+    }
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
     this.message = 'win';
-    return winner
   }
 }
