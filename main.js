@@ -5,18 +5,17 @@ var currentPlayer;
 
 window.onload = startUp();
 
-
 function startUp() {
   game.setGame();
   recallStorage();
-  handCount();
+  playerCardCount();
 }
-
+//event listener/handlers
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(event) {
-  // var player;
-  var keypress = event.which
+  var keypress = event.which;
+
   if (keypress == 81 || keypress == 70) {
     currentPlayer = game.player1;
   } else if (keypress == 80 || keypress == 74) {
@@ -27,18 +26,18 @@ function handleKeydown(event) {
 
 function gameHandler(keypress) {
   if (keypress == 81 || keypress == 80) {
-    hideText();
+    hideGameMessage();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
-    handCount();
+    playerCardCount();
   } else if (keypress == 70 || keypress == 74) {
     game.slap(currentPlayer);
-    removePile();
+    removeCenterPile();
     textToScreen();
-    handCount();
+    playerCardCount();
   }
 }
-
+//visualise cards
 function showCenterCard() {
   var color;
 
@@ -53,13 +52,13 @@ function showCenterCard() {
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
 
-  document.getElementById('center-card').style.boxShadow = `0 0 13px 0px ${color}`;
+  document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
   showOrHideHand();
 }
 
-function removePile() {
+function removeCenterPile() {
   if (game.centerPile[0] == undefined) {
   pageCenterPile.innerHTML = "";
   }
@@ -76,7 +75,7 @@ function showOrHideHand(){
     hand.classList.remove('hidden');
   }
 }
-
+// game messages
 function textToScreen() {
   h1.innerText = `${game.message}`;
   h1.classList.remove('hidden');
@@ -86,26 +85,25 @@ function textToScreen() {
   }
 }
 
-function hideText() {
+function hideGameMessage() {
   h1.classList.add('hidden');
 }
 
-function recallStorage() {
-  var newPlayer = `0`
-  var whichPlayer;
-
-  for (i = 1; i < 3; i++) {
-    var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
-    whichPlayer = `player${i}wins`;
-
-    document.getElementById(whichPlayer).innerText = `${storage || 0} Wins`;
-  }
-}
-
-function handCount(info) {
+// user info
+function playerCardCount(info) {
     document.getElementById('player1count').innerText = `${game.player1.hand.length} cards`;
 
     document.getElementById('player2count').innerText = `${game.player2.hand.length} cards`;
 }
 
+function recallStorage() {
+  var domWins;
+
+  for (i = 1; i < 3; i++) {
+    var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
+    domWins = `player${i}wins`;
+
+    document.getElementById(domWins).innerText = `${storage || 0} Wins`;
+  }
+}
 //
