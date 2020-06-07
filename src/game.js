@@ -169,7 +169,7 @@ class Game {
     this.whoseTurn = this.player1;
     this.message;
   }
-
+//dealer functions
   shuffle(cards) {
     for (var i = 0; i < cards.length; i++) {
     var randomDigit = Math.floor(Math.random() * cards.length);
@@ -178,8 +178,7 @@ class Game {
   }
 
   dealCards() {
-    var currentDeck = this.deck.length;
-    for (var i = 0; i < currentDeck; i++){
+    for (var i = 0; i < this.deck.length; i++){
       if (i % 2 == 0) {
         this.player2.hand.push(this.deck.shift());
       } else {
@@ -193,30 +192,6 @@ class Game {
     this.dealCards()
   }
 
-  movePlayersCard(player) {
-    if (player == this.whoseTurn && player.hand.length > 1) {
-      this.centerPile.unshift(player.playCard());
-      this.whoseTurn = this.togglePlayer(player);
-    } else if (player == this.whoseTurn && player.hand.length === 1) {
-      this.centerPile.unshift(player.playCard());
-      player.hailMary = true;
-      this.whoseTurn = this.togglePlayer(player);
-    }
-  }
-
-  togglePlayer(player) {
-    if (player == this.player1 && this.player2.hailMary == false) {
-      return this.player2;
-    } else if (player == this.player1 && this.player2.hailMary == true) {
-      return this.player1;
-    }
-    if (player == this.player2 && this.player1.hailMary == false) {
-      return this.player1;
-    } else if (player == this.player2 && this.player1.hailMary == true) {
-      return this.player2;
-    }
-  }
-
   resetDeck() {
     this.deck = this.player1.hand.concat(this.player2.hand.concat(this.centerPile));
     this.shuffle(this.deck);
@@ -227,34 +202,42 @@ class Game {
     this.player1.hailMary = false;
     this.player2.hailMary = false;
   }
+//player moves
+  movePlayersCard(player) {
+    if (this.player1.hailMary && this.player2.hailMary) {
+      this.resetDeck();
+      this.dealCards();
+    }
+    if (player == this.whoseTurn && player.hand.length > 1) {
+      this.centerPile.unshift(player.playCard());
+    } else if (player == this.whoseTurn &&
+      player.hand.length === 1) {
+        this.centerPile.unshift(player.playCard());
+        player.hailMary = true;
+    }
+    if (this.findOpponent(player).hailMary == false) {
+      this.whoseTurn = this.findOpponent(player);
+    }
+  }
 
-  slap(player) {
-
+  slap(player){
+    var takeMsg = `Player ${player.id} takes the pile!`;
     if (this.centerPile[0].type == "jack"){
-      this.takeHand(player);
-      this.message = 'SLAPJACK!';
+      this.message = `SLAPJACK! ${takeMsg}`;
+      this.takePile(player);
     } else if (this.centerPile[0].type == this.centerPile[1].type) {
-      this.takeHand(player);
-      this.message = 'DOUBLE!';
+      this.message = `DOUBLE! ${takeMsg}`;
+      this.takePile(player);
     } else if (this.centerPile[0].type == this.centerPile[2].type) {
-      this.takeHand(player);
-      this.message = 'SANDWHICH!';
+      this.message = `SANDWHICH! ${takeMsg}`;
+      this.takePile(player);
     } else {
       this.badPlay(player);
-      this.message = 'foul';
+      this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
     }
-  }
 
-  checkWin(player){
-    debugger
-    var opponent = this.togglePlayer(player)
-    if (opponent.hailMary == true){
-      opponent.hailMary = false;
-      this.declareWinner(player, "self");
-    }
-  }
 
-  takeHand(player) {
+  takePile(player) {
     player.hand = (player.hand.concat(this.centerPile));
     this.centerPile = [];
     this.shuffle(player.hand);
@@ -264,8 +247,8 @@ class Game {
 
   badPlay(player) {
     if (player.hand.length > 0) {
-      this.togglePlayer(player).hand.push(player.hand[0]);
-      this.togglePlayer(player).hailMary = false;
+      this.findOpponent(player).hand.push(player.hand[0]);
+      this.findOpponent(player).hailMary = false;
       player.hand.splice(0, 1);
     } else if (player.hailMary == true) {
       player.hailMary = false;
@@ -274,17 +257,33 @@ class Game {
       player.hailMary = true;
     }
   }
+  //game functions
+  findOpponent(player) {
+    if (player == this.player1) {
+      return this.player2;
+    } else if (player == this.player2) {
+      return this.player1;
+    }
+  }
+
+  checkWin(player){
+    debugger
+    var opponent = this.findOpponent(player)
+    if (opponent.hailMary == true){
+      this.declareWinner(player, "self");
+    }
+  }
 
   declareWinner(player, won) {
     var winner;
     if (won == "opponent") {
-      winner = this.togglePlayer(player)
+      winner = this.findOpponent(player)
     } else {
       winner = player;
     }
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
-    this.message = 'win';
+    this.message = `Player ${winner.id} wins!`;
   }
 }

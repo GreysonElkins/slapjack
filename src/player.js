@@ -4,7 +4,6 @@ class Player {
     this.winCount = 0;
     this.hand = [];
     this.hailMary = false;
-    this.opponent;
   }
   playCard() {
     return this.hand.shift();

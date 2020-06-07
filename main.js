@@ -22,7 +22,7 @@ function gameHandler(player, keypress) {
   if (keypress == 81 || keypress == 80) {
     hideText();
     game.movePlayersCard(player);
-    showCard(player);
+    showCenterCard(player);
   } else if (keypress == 70 || keypress == 74) {
     game.slap(player);
     removePile(player);
@@ -31,7 +31,7 @@ function gameHandler(player, keypress) {
   }
 }
 
-function showCard(player) {
+function showCenterCard(player) {
   var color;
 
   if (game.whoseTurn.id == "1") {
@@ -72,7 +72,9 @@ function showHand(player){
 }
 //IF OPPONENT SLAPS WHILE YOU HAVE A HAIL MARY, WILL THEY WIN?
 function textToScreen(player){
-  if (game.message == 'SLAPJACK!' ||
+  if (game.message == "win") {
+    h1.innerText = `${game.message}`
+  } else if (game.message == 'SLAPJACK!' ||
   game.message == 'SANDWHICH!' ||
   game.message == 'DOUBLE!') {
     h1.innerText = `${game.message} Player ${player.id} takes the pile!`
@@ -81,8 +83,6 @@ function textToScreen(player){
     h1.innerText = `BAD SLAP! Player ${player.id} foreits a card to Player ${player.opponent}!`
     showHand(game.togglePlayer(player));
     //
-  } else if (game.message == "win") {
-    h1.innerText = `${player.opponent} wins!`
   }
   h1.classList.remove('hidden')
 }
