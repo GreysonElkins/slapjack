@@ -1,37 +1,36 @@
 var game = new Game();
 var pageCenterPile = document.querySelector('.center-pile')
 var h1 = document.querySelector('h1');
-
+var currentPlayer;
 
 window.onload = game.setGame();
 
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(event) {
-  var player;
+  // var player;
   var keypress = event.which
   if (keypress == 81 || keypress == 70) {
-    player = game.player1;
+    currentPlayer = game.player1;
   } else if (keypress == 80 || keypress == 74) {
-    player = game.player2;
+    currentPlayer = game.player2;
   }
-  gameHandler(player, keypress);
+  gameHandler(keypress);
 }
 
-function gameHandler(player, keypress) {
+function gameHandler(keypress) {
   if (keypress == 81 || keypress == 80) {
     hideText();
-    game.movePlayersCard(player);
-    showCenterCard(player);
+    game.movePlayersCard(currentPlayer);
+    showCenterCard();
   } else if (keypress == 70 || keypress == 74) {
-    game.slap(player);
-    removePile(player);
-    wipeHand(player);
-    textToScreen(player);
+    game.slap(currentPlayer);
+    removePile();
+    textToScreen();
   }
 }
 
-function showCenterCard(player) {
+function showCenterCard() {
   var color;
 
   if (game.whoseTurn.id == "1") {
@@ -48,43 +47,31 @@ function showCenterCard(player) {
   document.getElementById('center-card').style.boxShadow = `0 0 13px 0px ${color}`;
   }
 
-  wipeHand(player);
+  showOrHideHand();
 }
 
 function removePile() {
   if (game.centerPile[0] == undefined) {
   pageCenterPile.innerHTML = "";
   }
+
+  showOrHideHand();
 }
 
-function wipeHand(player){
-  if (player.hand[0] == undefined && player.id == "1") {
-    document.querySelector('#player-1').classList.add('hidden');
-  } else if (player.hand.length == 0 && player.id == "2") {
-    document.querySelector('#player-2').classList.add('hidden');
+function showOrHideHand(){
+  var hand = document.querySelector(`#player-${currentPlayer.id}`)
+
+  if (currentPlayer.hand[0] == undefined) {
+    hand.classList.add('hidden');
+  } else {
+    hand.classList.remove('hidden');
   }
 }
 
-function showHand(player){
-  if (player.hand[0] !== undefined) {
-    document.querySelector(`#player-${player.id}`).classList.remove('hidden');
-  }
-}
 //IF OPPONENT SLAPS WHILE YOU HAVE A HAIL MARY, WILL THEY WIN?
-function textToScreen(player){
-  if (game.message == "win") {
-    h1.innerText = `${game.message}`
-  } else if (game.message == 'SLAPJACK!' ||
-  game.message == 'SANDWHICH!' ||
-  game.message == 'DOUBLE!') {
-    h1.innerText = `${game.message} Player ${player.id} takes the pile!`
-    showHand(player)
-  } else if (game.message == "foul") {
-    h1.innerText = `BAD SLAP! Player ${player.id} foreits a card to Player ${player.opponent}!`
-    showHand(game.togglePlayer(player));
-    //
-  }
-  h1.classList.remove('hidden')
+function textToScreen() {
+  h1.innerText = `${game.message}`;
+  h1.classList.remove('hidden');
 }
 
 function hideText() {

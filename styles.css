@@ -37,6 +37,7 @@ h1 {
   flex-direction: column;
   align-content: center;
   width: 18em;
+  height: 32em;
 }
 
 .game-info {

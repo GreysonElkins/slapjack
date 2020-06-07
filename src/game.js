@@ -171,7 +171,8 @@ class Game {
   }
 //dealer functions
   shuffle(cards) {
-    for (var i = 0; i < cards.length; i++) {
+    var howMany = cards.length
+    for (var i = 0; i < howMany; i++) {
     var randomDigit = Math.floor(Math.random() * cards.length);
     cards.splice(randomDigit, 0, cards.shift());
     }
@@ -193,7 +194,8 @@ class Game {
   }
 
   resetDeck() {
-    this.deck = this.player1.hand.concat(this.player2.hand.concat(this.centerPile));
+    var playerHands = this.player1.hand.concat(this.player2.hand)
+    this.deck = playerHands.concat(this.centerPile);
     this.shuffle(this.deck);
     this.player1.hand = [];
     this.player2.hand = [];
@@ -221,21 +223,23 @@ class Game {
   }
 
   slap(player){
-    var takeMsg = `Player ${player.id} takes the pile!`;
-    if (this.centerPile[0].type == "jack"){
+    var takeMsg = `Player ${player.id} takes the pile!`
+    var topCard = this.centerPile[0].type;
+
+    if (topCard == "jack"){
       this.message = `SLAPJACK! ${takeMsg}`;
       this.takePile(player);
-    } else if (this.centerPile[0].type == this.centerPile[1].type) {
+    } else if (topCard == this.centerPile[1].type) {
       this.message = `DOUBLE! ${takeMsg}`;
       this.takePile(player);
-    } else if (this.centerPile[0].type == this.centerPile[2].type) {
+    } else if (topCard == this.centerPile[2].type) {
       this.message = `SANDWHICH! ${takeMsg}`;
       this.takePile(player);
     } else {
       this.badPlay(player);
       this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
     }
-
+  }
 
   takePile(player) {
     player.hand = (player.hand.concat(this.centerPile));
@@ -267,7 +271,6 @@ class Game {
   }
 
   checkWin(player){
-    debugger
     var opponent = this.findOpponent(player)
     if (opponent.hailMary == true){
       this.declareWinner(player, "self");
