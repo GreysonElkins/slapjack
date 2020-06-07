@@ -30,7 +30,6 @@ function gameHandler(player, keypress) {
 function showCard(player) {
   var color;
 
-debugger
   if (player.id == "1") {
     color = "#009FB7";
   } else {
@@ -42,7 +41,7 @@ debugger
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
-    
+
   document.getElementById('center-card').style.boxShadow = `0 0 13px 0px ${color}`;
   }
 
@@ -50,7 +49,7 @@ debugger
 }
 
 function removePile() {
-  if (game.centerPile == []) {
+  if (game.centerPile[0] == undefined) {
   pageCenterPile.innerHTML = "";
   }
 }
