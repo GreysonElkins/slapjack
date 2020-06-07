@@ -42,9 +42,9 @@ function showCenterCard() {
   var color;
 
   if (game.whoseTurn.id == "1") {
-    color = "#06D6A0";
-  } else {
     color = "#EF476F";
+  } else {
+    color = "#06D6A0";
   }
 
   if (game.centerPile[0] !== undefined) {
