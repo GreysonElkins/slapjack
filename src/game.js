@@ -179,7 +179,8 @@ class Game {
   }
 
   dealCards() {
-    for (var i = 0; i < this.deck.length; i++){
+    var howMany = this.deck.length;
+    for (var i = 0; i < howMany; i++){
       if (i % 2 == 0) {
         this.player2.hand.push(this.deck.shift());
       } else {
@@ -194,6 +195,7 @@ class Game {
   }
 
   resetDeck() {
+    debugger
     var playerHands = this.player1.hand.concat(this.player2.hand)
     this.deck = playerHands.concat(this.centerPile);
     this.shuffle(this.deck);

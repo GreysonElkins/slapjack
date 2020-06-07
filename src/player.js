@@ -1,10 +1,10 @@
 class Player {
   constructor (id) {
     this.id = id;
-    this.winCount = 0;
+    this.name = `Player ${this.id}`
+    this.winCount = this.retrieveFromStorage() || 0;
     this.hand = [];
     this.hailMary = false;
-    this.name = `Player ${this.id}`
   }
 
   playCard() {
@@ -13,6 +13,10 @@ class Player {
 
   saveWinsToStorage() {
     localStorage.setItem(`${this.name}`, JSON.stringify(this.winCount));
+  }
+
+  retrieveFromStorage() {
+    return JSON.parse(localStorage.getItem(this.name));
   }
 }
 
