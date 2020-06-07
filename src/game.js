@@ -38,7 +38,7 @@ class Game {
       src: "./assets/blue-10.png"},
       {type: "jack",
       suit: "blue",
-      src: `./assets/blue-jack`},
+      src: `./assets/blue-jack.png`},
       {type: "queen",
       suit: "blue",
       src: "./assets/blue-queen.png"},
@@ -77,7 +77,7 @@ class Game {
       src: "./assets/gold-10.png"},
       {type: "jack",
       suit: "gold",
-      src: `./assets/gold-jack`},
+      src: `./assets/gold-jack.png`},
       {type: "queen",
       suit: "gold",
       src: "./assets/gold-queen.png"},
@@ -116,7 +116,7 @@ class Game {
       src: "./assets/green-10.png"},
       {type: "jack",
       suit: "green",
-      src: `./assets/green-jack`},
+      src: `./assets/green-jack.png`},
       {type: "queen",
       suit: "green",
       src: "./assets/green-queen.png"},
@@ -155,7 +155,7 @@ class Game {
       src: "./assets/red-10.png"},
       {type: "jack",
       suit: "red",
-      src: `./assets/red-jack`},
+      src: `./assets/red-jack.png`},
       {type: "queen",
       suit: "red",
       src: "./assets/red-queen.png"},
@@ -239,7 +239,6 @@ class Game {
         this.centerPile = [];
         this.shuffle(player.hand);
         player.hailMary = false;
-        console.log('Got it!')
       } else {
         this.badPlay(player);
       }
@@ -249,14 +248,11 @@ class Game {
     if (player.hand.length > 0) {
       this.togglePlayer(player).hand.push(player.hand[0]);
       player.hand.splice(0, 1);
-      console.log('Uh-oh!')
     } else if (player.hailMary == true) {
       player.hailMary = false;
       this.declareWinner(player);
-      console.log("you lose!")
     } else if (player.hand === []) {
       player.hailMary = true;
-      console.log("one more chance!")
     }
   }
 
