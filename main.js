@@ -91,9 +91,9 @@ function hideGameMessage() {
 
 // user info
 function playerCardCount(info) {
-    document.getElementById('player1count').innerText = `${game.player1.hand.length} cards`;
+    document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
 
-    document.getElementById('player2count').innerText = `${game.player2.hand.length} cards`;
+    document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
 }
 
 function recallStorage() {
@@ -101,7 +101,7 @@ function recallStorage() {
 
   for (i = 1; i < 3; i++) {
     var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
-    domWins = `player${i}wins`;
+    domWins = `player-${i}-wins`;
 
     document.getElementById(domWins).innerText = `${storage || 0} Wins`;
   }
