@@ -1,4 +1,4 @@
-var game = new Game();
+// var game = new Game();
 var pageCenterPile = document.querySelector('.center-pile')
 var h1 = document.querySelector('h1');
 var currentPlayer;
@@ -6,9 +6,9 @@ var currentPlayer;
 window.onload = startUp();
 
 function startUp() {
-  game.setGame();
+  // game.setGame();
   recallStorage();
-  playerCardCount();
+  // playerCardCount();
 }
 //event listener/handlers
 window.addEventListener('keydown', handleKeydown);

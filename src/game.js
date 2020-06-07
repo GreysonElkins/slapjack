@@ -1,7 +1,7 @@
 class Game {
   constructor() {
-    this.player1 = new Player("1");
-    this.player2 = new Player("2");
+    this.player1 = new Player("Player 1", "1");
+    this.player2 = new Player("Player 1", "2");
     this.deck = [
       {type: "ace",
       suit: "blue",

@@ -1,7 +1,7 @@
 class Player {
-  constructor (id) {
+  constructor (name, id) {
     this.id = id;
-    this.name = `Player ${this.id}`
+    this.name = `name`
     this.winCount = this.retrieveFromStorage() || 0;
     this.hand = [];
     this.hailMary = false;

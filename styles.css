@@ -28,6 +28,27 @@ h1,
 p {
   color: #5C415D;
 }
+
+h2 {
+  margin: 2em;
+}
+/* player forms */
+.player-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.player-form > p {
+  margin: .5em;
+}
+input {
+
+}
+button {
+  height: 2em;
+  margin: .5em;
+  width: 3em;
+}
 /* card section */
 .playing-field {
   display: flex;
