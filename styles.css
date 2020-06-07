@@ -31,7 +31,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-content: center;
-  width: 20em;
+  width: 33%;
   /* height: 32em; */
 }
 
@@ -51,10 +51,10 @@ img {
   width: 18em;
 }
 
-.player1-hand > img {
+.player-1-hand > img {
   box-shadow: 0 0 13px 0px #009FB7;
 }
-.player2-hand > img {
+.player-2-hand > img {
   box-shadow: 0 0 13px 0px #FFD23F;
 }
 

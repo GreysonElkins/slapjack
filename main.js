@@ -2,6 +2,7 @@ var game = new Game();
 var pageCenterPile = document.querySelector('.center-pile')
 var h1 = document.querySelector('h1');
 
+
 window.onload = game.setGame();
 
 window.addEventListener('keydown', handleKeydown);
@@ -10,7 +11,7 @@ function handleKeydown(event) {
   var player;
   var keypress = event.which
   if (keypress == 81 || keypress == 70) {
-    player = game.player1
+    player = game.player1;
   } else if (keypress == 80 || keypress == 74) {
     player = game.player2;
   }
@@ -33,14 +34,13 @@ function gameHandler(player, keypress) {
 function showCard(player) {
   var color;
 
-  if (player.id == "1") {
+  if (game.whoseTurn == "1") {
     color = "#009FB7";
   } else {
     color = "#fFD23F";
   }
 
   if (game.centerPile[0] !== undefined) {
-
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
@@ -58,32 +58,22 @@ function removePile() {
 }
 
 function wipeHand(player){
-  if (player.hand == []) {
-    document.getElementById(`.${player}-hand`).classList.add('.hidden');
+  if (player.hand[0] == undefined && player.id == "1") {
+    document.querySelector('#player-1').classList.add('hidden');
+  } else if (player.hand.length == 0 && player.id == "2") {
+    document.querySelector('#player-2').classList.add('hidden');
   }
 }
 
 function textToScreen(player){
-  var playerNum;
-  var opponent;
-
-  if (player.id = "1") {
-    playerNum = "Player 1";
-    opponent = "Player 2";
-  } else {
-    playerNum = "Player 2";
-    opponent = "Player 1"
-  }
-
-
   if (game.message == 'SLAPJACK!' ||
   game.message == 'SANDWHICH!' ||
   game.message == 'DOUBLE!') {
-    h1.innerText = `${game.message} ${playerNum} takes the pile!`
+    h1.innerText = `${game.message} Player ${player.id} takes the pile!`
   } else if (game.message == "foul") {
-    h1.innerText = `BAD SLAP! ${playerNum} foreits a card to ${opponent}!`
+    h1.innerText = `BAD SLAP! Player ${player.id} foreits a card to Player ${player.opponent}!`
   } else if (game.message == "win") {
-    h1.innerText = `${opponent} wins!`
+    h1.innerText = `${player.opponent} wins!`
   }
   h1.classList.remove('hidden')
 }

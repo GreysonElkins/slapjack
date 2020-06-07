@@ -288,6 +288,3 @@ class Game {
     return winner
   }
 }
-
-
-// module.exports = Game;
