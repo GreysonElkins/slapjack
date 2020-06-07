@@ -208,14 +208,13 @@ class Game {
 
   addWild() {
     var randomPlayerNumber = Math.floor(Math.random() * 2);
-    cards.splice(randomDigit, 0, cards.shift());
 
     if (randomPlayerNumber = 1) {
       this.player1.hand.push(this.wildCard);
-      shuffle(this.player2.hand);
+      this.shuffle(this.player2.hand);
     } else {
       this.player2.hand.push(this.wildCard);
-      shuffle(this.player2.hand);
+      this.shuffle(this.player2.hand);
     }
   }
 //player moves
@@ -237,10 +236,17 @@ class Game {
   }
 
   slap(player){
+    debugger
     var takeMsg = `Player ${player.id} takes the pile!`
     var topCard = this.centerPile[0].type;
+    var trumpCard = "jack";
 
-    if (this.centerPile.length > 0 && topCard == "jack") {
+    if (this.centerPile.includes(this.wildCard)) {
+      trumpCard = "queen"
+      takeMsg = `Player ${player.id} takes the wild Queen!`
+    }
+
+    if (this.centerPile.length > 0 && topCard == trumpCard) {
       this.message = `SLAPJACK! ${takeMsg}`;
       this.takePile(player);
     } else if (this.centerPile.length > 1 &&
