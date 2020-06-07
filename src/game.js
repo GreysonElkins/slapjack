@@ -1,10 +1,9 @@
 // players save to local.storage, game can check local storage and recieve them
-// const Player = require('../src/player');
 
 class Game {
   constructor() {
-    this.player1 = new Player("1", this);
-    this.player2 = new Player("2", this);
+    this.player1 = new Player("1");
+    this.player2 = new Player("2");
     this.deck = [
       {type: "ace",
       suit: "blue",
@@ -38,7 +37,7 @@ class Game {
       src: "./assets/blue-10.png"},
       {type: "jack",
       suit: "blue",
-      src: `./assets/blue-jack`},
+      src: `./assets/blue-jack.png`},
       {type: "queen",
       suit: "blue",
       src: "./assets/blue-queen.png"},
@@ -77,7 +76,7 @@ class Game {
       src: "./assets/gold-10.png"},
       {type: "jack",
       suit: "gold",
-      src: `./assets/gold-jack`},
+      src: `./assets/gold-jack.png`},
       {type: "queen",
       suit: "gold",
       src: "./assets/gold-queen.png"},
@@ -116,7 +115,7 @@ class Game {
       src: "./assets/green-10.png"},
       {type: "jack",
       suit: "green",
-      src: `./assets/green-jack`},
+      src: `./assets/green-jack.png`},
       {type: "queen",
       suit: "green",
       src: "./assets/green-queen.png"},
@@ -155,7 +154,7 @@ class Game {
       src: "./assets/red-10.png"},
       {type: "jack",
       suit: "red",
-      src: `./assets/red-jack`},
+      src: `./assets/red-jack.png`},
       {type: "queen",
       suit: "red",
       src: "./assets/red-queen.png"},
@@ -168,18 +167,20 @@ class Game {
     src: "./assets/wild.png"};
     this.centerPile = [];
     this.whoseTurn = this.player1;
+    this.message;
   }
-
+//dealer functions
   shuffle(cards) {
-    for (var i = 0; i < cards.length; i++) {
+    var howMany = cards.length
+    for (var i = 0; i < howMany; i++) {
     var randomDigit = Math.floor(Math.random() * cards.length);
     cards.splice(randomDigit, 0, cards.shift());
     }
   }
 
   dealCards() {
-    var currentDeck = this.deck.length;
-    for (var i = 0; i < currentDeck; i++){
+    var howMany = this.deck.length;
+    for (var i = 0; i < howMany; i++){
       if (i % 2 == 0) {
         this.player2.hand.push(this.deck.shift());
       } else {
@@ -193,32 +194,10 @@ class Game {
     this.dealCards()
   }
 
-  movePlayersCard(player) {
-    if (player == this.whoseTurn && player.hand.length > 1) {
-      this.centerPile.unshift(player.playCard());
-      this.whoseTurn = this.togglePlayer(player);
-    } else if (player == this.whoseTurn && player.hand.length === 1) {
-      this.centerPile.unshift(player.playCard());
-      player.hailMary = true;
-      this.whoseTurn = this.togglePlayer(player);
-    }
-  }
-  //THIS CAN RUN WITHOUT CARDS IN A PLAYERS HAND
-  togglePlayer(player) {
-    if (player == this.player1 && this.player2.hailMary == false) {
-      return this.player2;
-    } else if (player == this.player1 && this.player2.hailMary == true) {
-      return this.player1;
-    }
-    if (player == this.player2 && this.player1.hailMary == false) {
-      return this.player1;
-    } else if (player == this.player2 && this.player1.hailMary == true) {
-      return this.player2;
-    }
-  }
-
   resetDeck() {
-    this.deck = this.player1.hand.concat(this.player2.hand.concat(this.centerPile));
+    debugger
+    var playerHands = this.player1.hand.concat(this.player2.hand)
+    this.deck = playerHands.concat(this.centerPile);
     this.shuffle(this.deck);
     this.player1.hand = [];
     this.player2.hand = [];
@@ -226,60 +205,92 @@ class Game {
 
     this.player1.hailMary = false;
     this.player2.hailMary = false;
+
+    this.setGame();
+  }
+//player moves
+  movePlayersCard(player) {
+    if (this.player1.hailMary && this.player2.hailMary) {
+      this.resetDeck();
+      this.dealCards();
+    }
+    if (player == this.whoseTurn && player.hand.length > 1) {
+      this.centerPile.unshift(player.playCard());
+    } else if (player == this.whoseTurn &&
+      player.hand.length === 1) {
+        this.centerPile.unshift(player.playCard());
+        player.hailMary = true;
+    }
+    if (this.findOpponent(player).hailMary == false) {
+      this.whoseTurn = this.findOpponent(player);
+    }
   }
 
-  slap(player) {
-    // if (this.centerPile[0] == undefined) {
-    //   return
-    // }
-    if (this.centerPile[0].type == "jack" ||
-      this.centerPile[0].type == this.centerPile[1].type ||
-      this.centerPile[0].type == this.centerPile[2].type) {
-        player.hand = (player.hand.concat(this.centerPile));
-        this.centerPile = [];
-        this.shuffle(player.hand);
-        player.hailMary = false;
-        console.log('Got it!')
-      } else {
-        this.badPlay(player);
-      }
+  slap(player){
+    var takeMsg = `Player ${player.id} takes the pile!`
+    var topCard = this.centerPile[0].type;
+
+    if (topCard == "jack"){
+      this.message = `SLAPJACK! ${takeMsg}`;
+      this.takePile(player);
+    } else if (topCard == this.centerPile[1].type) {
+      this.message = `DOUBLE! ${takeMsg}`;
+      this.takePile(player);
+    } else if (topCard == this.centerPile[2].type) {
+      this.message = `SANDWHICH! ${takeMsg}`;
+      this.takePile(player);
+    } else {
+      this.badPlay(player);
+      this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
+    }
+  }
+
+  takePile(player) {
+    player.hand = (player.hand.concat(this.centerPile));
+    this.centerPile = [];
+    this.shuffle(player.hand);
+    player.hailMary = false;
+    this.checkWin(player);
   }
 
   badPlay(player) {
     if (player.hand.length > 0) {
-      this.togglePlayer(player).hand.push(player.hand[0]);
+      this.findOpponent(player).hand.push(player.hand[0]);
+      this.findOpponent(player).hailMary = false;
       player.hand.splice(0, 1);
-      console.log('Uh-oh!')
     } else if (player.hailMary == true) {
       player.hailMary = false;
-      this.declareWinner(player);
-      console.log("you lose!")
+      this.declareWinner(player, "opponent");
     } else if (player.hand === []) {
       player.hailMary = true;
-      console.log("one more chance!")
+    }
+  }
+  //game functions
+  findOpponent(player) {
+    if (player == this.player1) {
+      return this.player2;
+    } else if (player == this.player2) {
+      return this.player1;
     }
   }
 
-  // checkWin(player) {
-  //   if (this.togglePlayer(player).hand === [] &&
-  //   this.togglePlayer(player).hailMary == false) {
-  //     this.togglePlayer(player).hailMary = true;
-  //   } else if (this.togglePlayer(player).hand === [] &&
-  //   this.togglePlayer(player).hailMary == true) {
-  //     this.togglePlayer(player).hailMary == false;
-  //     console.log(`player ${player.id} loses!`)
-  //     declareWinnder(player);
-  //   }
-  // }
+  checkWin(player){
+    var opponent = this.findOpponent(player)
+    if (opponent.hailMary == true){
+      this.declareWinner(player, "self");
+    }
+  }
 
-  declareWinner(player) {
-    var winner = this.togglePlayer(player)
+  declareWinner(player, won) {
+    var winner;
+    if (won == "opponent") {
+      winner = this.findOpponent(player)
+    } else {
+      winner = player;
+    }
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
-    return winner
+    this.message = `Player ${winner.id} wins!`;
   }
 }
-
-
-// module.exports = Game;
