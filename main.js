@@ -34,7 +34,7 @@ function gameHandler(keypress) {
 function showCenterCard() {
   var color;
 
-  if (game.whoseTurn.id == "Player 1") {
+  if (game.whoseTurn.id == "1") {
     color = "#FFD23F";
   } else {
     color = "#009FB7";
@@ -74,7 +74,7 @@ function textToScreen() {
   h1.classList.remove('hidden');
 
   if (game.message.includes('win')) {
-    gameOver();
+    recallStorage();
   }
 }
 
@@ -91,8 +91,6 @@ function recallStorage() {
     whichPlayer = `player${i}wins`;
 
     document.getElementById(whichPlayer).innerText = `${storage || 0} Wins`;
-    
-    console.log (`${storage || 0} Wins`);
   }
 }
 //
