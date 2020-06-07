@@ -1,25 +1,32 @@
 var game = new Game();
-var pageCenterPile = document.querySelector('.center-pile')
-var player1hand = document.querySelector();
-var player2hand = document.querySelector();
+var player1 = game.player1
+var player2 = game.player2
+var keypress = event.which
 
 window.onload = game.setGame();
 
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(event) {
-  if (event.which == 81) {
+  if (keypress == 81) {
     game.movePlayersCard(game.player1);
-    placeCard(game.player1);
-  } else if (event.which == 70) {
-    game.slap(game.player1);
+    placeCard(player1);
+  } else if (keypress == 70) {
+    game.slap(player1);
 
-  } else if (event.which == 80) {
+  } else if (keypress == 80) {
     game.movePlayersCard(game.player2);
-    placeCard(game.player1);
-  } else if (event.which == 74) {
-    game.slap(game.player2);
+    placeCard(player1);
+  } else if (keypress == 74) {
+    game.slap(player2);
   }
+}
+
+function gameHandler(player, event) {
+  if (keypress == 81 || keypress == 80) {
+    game.movePlayersCard(player);
+    placeCard(player);
+  } 
 }
 
 function placeCard(player) {
@@ -38,8 +45,19 @@ function placeCard(player) {
     ${game.centerPile[0].type}" id="center-card" />`;
   centerCard.style.boxShadow = `0 0 13px 0px ${color}`;
   }
+
+  wipeHand(player);
 }
 
-function removeCard(pile) {
-  pile.innerHTML = "";
+function removePile() {
+  var pageCenterPile = document.querySelector('.center-pile')
+  if (game.centerPile == []) {
+  pageCenterPile.innerHTML = "";
+  }
+}
+
+function wipeHand(player){
+  if (player.hand == []) {
+    document.getElementById(`.${player}-hand`).classList.add.('.hidden')
+  }
 }
