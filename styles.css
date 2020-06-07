@@ -8,11 +8,17 @@ body {
   align-content: center;
   background-color: #9D5C63;
 }
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 7em;
+}
 h1 {
   color: #FFF;
   font-size: 3em;
   text-align: center;
-
+  margin: 0em;
 }
 .playing-field {
   margin-top: 1.2em;
@@ -45,10 +51,10 @@ img {
   width: 18em;
 }
 
-.player-1-hand > img {
+.player1-hand > img {
   box-shadow: 0 0 13px 0px #009FB7;
 }
-.player-2-hand > img {
+.player2-hand > img {
   box-shadow: 0 0 13px 0px #FFD23F;
 }
 

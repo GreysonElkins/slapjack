@@ -168,6 +168,7 @@ class Game {
     src: "./assets/wild.png"};
     this.centerPile = [];
     this.whoseTurn = this.player1;
+    this.message;
   }
 
   shuffle(cards) {
@@ -232,16 +233,26 @@ class Game {
     // if (this.centerPile[0] == undefined) {
     //   return
     // }
-    if (this.centerPile[0].type == "jack" ||
-      this.centerPile[0].type == this.centerPile[1].type ||
-      this.centerPile[0].type == this.centerPile[2].type) {
-        player.hand = (player.hand.concat(this.centerPile));
-        this.centerPile = [];
-        this.shuffle(player.hand);
-        player.hailMary = false;
-      } else {
-        this.badPlay(player);
-      }
+    if (this.centerPile[0].type == "jack"){
+      this.takeHand(player);
+      this.message = 'SLAPJACK!';
+    } else if (this.centerPile[0].type == this.centerPile[1].type) {
+      this.takeHand(player);
+      this.message = 'DOUBLE!';
+    } else if (this.centerPile[0].type == this.centerPile[2].type) {
+      this.takeHand(player);
+      this.message = 'SANDWHICH!';
+    } else {
+      this.badPlay(player);
+      this.message = 'foul';
+    }
+  }
+
+  takeHand(player) {
+    player.hand = (player.hand.concat(this.centerPile));
+    this.centerPile = [];
+    this.shuffle(player.hand);
+    player.hailMary = false;
   }
 
   badPlay(player) {
@@ -273,6 +284,7 @@ class Game {
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
+    this.message = 'win';
     return winner
   }
 }
