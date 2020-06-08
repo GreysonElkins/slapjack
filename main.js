@@ -9,22 +9,14 @@ var player1 = "Player 1";
 var player2 = "Player 2";
 var game = new Game(player1, player2);
 
-// function startUp() {
-//   game.setGame();
-//   recallStorage();
-//   playerCardCount();
-//
-// }
-//event listener/handlers
 window.addEventListener('keydown', handleKeydown);
 playerForm.addEventListener('click', formHandler);
-
-
 
 function startUp() {
   game = new Game(player1, player2);
   game.setGame();
   recallStorage();
+  playerCardCount()
   document.querySelector(`#player-1`).classList.remove('hidden');
   document.querySelector(`#player-2`).classList.remove('hidden');
 }
@@ -33,7 +25,6 @@ function formHandler(event) {
   if (event.target.id == "save-user") {
     saveUser();
   } else if (event.target.id == "yes" || event.target.id == "no") {
-    console.log("yup")
     userDataSelection(event);
   }
 }
@@ -117,7 +108,7 @@ function hideGameMessage() {
 }
 
 // user info
-function playerCardCount(info) {
+function playerCardCount() {
     document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
 
     document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
@@ -126,16 +117,18 @@ function playerCardCount(info) {
 function recallStorage() {
   var domWins;
 
-  for (i = 1; i < 3; i++) {
-    var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
-    domWins = `player-${i}-wins`;
+  document.getElementById(`player-1-wins`).innerText = `${player1.winCount || 0} Wins`;
+  document.getElementById(`player-2-wins`).innerText = `${player2.winCount || 0} Wins`
+  // for (i = 1; i < 3; i++) {
+    // var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
+    // domWins = `player-${i}-wins`;
 
-    document.getElementById(domWins).innerText = `${storage || 0} Wins`;
-  }
+  // }
 }
 //user creation
 function saveUser() {
   var inputValue = document.querySelector('input').value
+  document.querySelector('input').value = "";
   buttonPress++;
 
   if (buttonPress == 1) {
@@ -146,11 +139,14 @@ function saveUser() {
   }
   if (buttonPress == 2) {
     player2 = inputValue;
+    if (checkForUser(player2) == false) {
+      hideForm();
+      showUserNames();
+      startUp();
+    }
 
-    document.querySelector('input').value = "";
-
-    showUserNames();
-    startUp();
+    // showUserNames();
+    // startUp();
   }
 }
 
@@ -193,21 +189,29 @@ function promptPlayerTwo() {
 }
 
 function userDataSelection(event) {
-console.log(event);
 var player;
-var identify = document.querySelector('input').value;
+
   if (document.querySelector('#direction').innerText.includes('1')) {
-   player = player1;
+    player = player1;
   } else {
     player = player2;
   }
 
-  if (event.target.id = "yes") {
-    player1 = JSON.parse(localStorage.getItem(player1));
+  if (event.target.id = "yes" && buttonPress == 1) {
+    player1 = JSON.parse(localStorage.getItem(player));
     promptPlayerTwo();
-  } else if (event.target.id = "no") {
+  } else if(event.target.id = "yes" && buttonPress == 2) {
+    player2 = JSON.parse(localStorage.getItem(player));
+    showUserNames();
+    startUp();
+  } else if (event.target.id = "no" && buttonPress == 1) {
     promptPlayerTwo();
+  } else if (event.target.id = "no" && buttonPress == 2) {
+    player2 = document.querySelector('input').value;
+    startUp();
   }
+
+  document.querySelector('.old-user-msg').classList.add('hidden');
 }
 
 //
