@@ -72,7 +72,3 @@ I'm very glad that this project followed two group projects. At the end of the f
 
 ### Acknowledgments
 A big thanks to my mentor Garrett Iannuzzi for providing a code review on a massive submission. Also to Leta Keane, Scott Ertmer, and Casey Dallavalle for a great start at Turing. And of course, Orlando Murcio, Derek Romero, and Keith Crofton for being awesome teammates on group projects in preperation for this. 
-
-
-
-//
