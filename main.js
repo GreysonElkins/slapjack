@@ -7,7 +7,6 @@ var currentPlayer;
 var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
 var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
 var buttonPress = 0;
-// var game = new Game(player1, player2);
 
 startSection.addEventListener('click', startHandler);
 playerForm.addEventListener('click', formHandler);
