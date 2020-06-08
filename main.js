@@ -7,7 +7,6 @@ var currentPlayer;
 var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
 var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
 var buttonPress = 0;
-// var game = new Game(player1, player2);
 
 startSection.addEventListener('click', startHandler);
 playerForm.addEventListener('click', formHandler);
@@ -59,7 +58,6 @@ function gameHandler(keypress) {
     removeCenterPile();
     textToScreen();
     playerCardCount();
-
   }
 }
 //site set-up
@@ -114,7 +112,7 @@ function textToScreen() {
   h1.innerText = `${game.message}`;
   h1.classList.remove('hidden');
 
-  if (game.message.includes('win')) {
+  if (game.message.includes('wins!')) {
     findWinCount();
   }
 }
@@ -132,8 +130,11 @@ function playerCardCount() {
 }
 
 function findWinCount() {
+  player1 = game.player1
+  player2 = game.player2
+  var subject = player1;
+
   for (i = 1; i < 3; i++) {
-    var subject = player1;
     if (i == 2) {
       subject = player2;
     }
@@ -146,19 +147,30 @@ function findWinCount() {
 }
 //user creation
 function saveUser() {
+  debugger
   var inputValue = document.querySelector('input').value
 
   document.querySelector('input').value = "";
   buttonPress++;
 
-  if (buttonPress == 1) {
+  if (inputValue === "" && buttonPress == 1) {
+    player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
+    hideForm();
+    showUserNames();
+    startUpGame();
+  } else if (buttonPress == 1) {
     player1 = inputValue;
   }
   if (checkForUser(player1) == false && buttonPress == 1) {
     promptPlayerTwo();
   }
 
-  if (buttonPress == 2) {
+  if (inputValue == "" && buttonPress == 2) {
+    player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
+    hideForm();
+    showUserNames();
+    startUpGame();
+  } else if (buttonPress == 2) {
     player2 = inputValue;
   }
   if (checkForUser(player2) == false && buttonPress == 2) {
