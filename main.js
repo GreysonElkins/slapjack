@@ -1,6 +1,6 @@
 var startAppSection = document.querySelector('.start-game');
-var pageCenterPile = document.querySelector('.center-pile');
 var userForm = document.querySelector('.player-form');
+var pageCenterPile = document.querySelector('.center-pile');
 var h1 = document.querySelector('h1');
 
 var currentPlayer;
@@ -59,7 +59,6 @@ function userFormHandler(event) {
   }
 }
 
-
 //site set-up
 function startGame(firstplayer, secondplayer) {
   var player1 = firstplayer || JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
@@ -72,7 +71,7 @@ function startGame(firstplayer, secondplayer) {
   document.querySelector(`#player-1-hand`).classList.remove('hidden');
   document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
-
+// gameplay methods
 function showCenterCard() {
   var color;
 
@@ -110,6 +109,7 @@ function hideHand(whichPlayer){
     hand.classList.add('hidden');
   }
 }
+
 function showHand(whichPlayer) {
   var hand = document.querySelector(`#player-${whichPlayer.id}`);
 
