@@ -148,19 +148,30 @@ function findWinCount() {
 }
 //user creation
 function saveUser() {
+  debugger
   var inputValue = document.querySelector('input').value
 
   document.querySelector('input').value = "";
   buttonPress++;
 
-  if (buttonPress == 1) {
+  if (inputValue === "" && buttonPress == 1) {
+    player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
+    hideForm();
+    showUserNames();
+    startUpGame();
+  } else if (buttonPress == 1) {
     player1 = inputValue;
   }
   if (checkForUser(player1) == false && buttonPress == 1) {
     promptPlayerTwo();
   }
 
-  if (buttonPress == 2) {
+  if (inputValue == "" && buttonPress == 2) {
+    player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
+    hideForm();
+    showUserNames();
+    startUpGame();
+  } else if (buttonPress == 2) {
     player2 = inputValue;
   }
   if (checkForUser(player2) == false && buttonPress == 2) {
