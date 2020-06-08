@@ -13,11 +13,14 @@ The project has made it through each required iteration, and of those there's on
 ### Website Screengrabs:
 ###
 
-Main page:
+Gameplay:
+![gameplay giphy](./assets/readme/gameplay.gif)
 
 User Form:
+![filling out the user form](./assets/readme/userform.gif)
 
-Start Page:
+Wild Card Play:
+![wild card play](./assets/readme/wildcard.gif)
 
 ### Using the App
 ###
