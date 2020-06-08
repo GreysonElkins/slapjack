@@ -205,6 +205,18 @@ class Game {
 
     this.setGame();
   }
+
+  addWild() {
+    var randomPlayerNumber = Math.floor(Math.random() * 2);
+
+    if (randomPlayerNumber = 1) {
+      this.player1.hand.push(this.wildCard);
+      this.shuffle(this.player2.hand);
+    } else {
+      this.player2.hand.push(this.wildCard);
+      this.shuffle(this.player2.hand);
+    }
+  }
 //player moves
   movePlayersCard(player) {
     if (this.player1.hailMary && this.player2.hailMary) {
@@ -224,10 +236,17 @@ class Game {
   }
 
   slap(player){
+    debugger
     var takeMsg = `Player ${player.id} takes the pile!`
     var topCard = this.centerPile[0].type;
+    var trumpCard = "jack";
 
-    if (this.centerPile.length > 0 && topCard == "jack") {
+    if (this.centerPile.includes(this.wildCard)) {
+      trumpCard = "queen"
+      takeMsg = `Player ${player.id} takes the wild Queen!`
+    }
+
+    if (this.centerPile.length > 0 && topCard == trumpCard) {
       this.message = `SLAPJACK! ${takeMsg}`;
       this.takePile(player);
     } else if (this.centerPile.length > 1 &&
@@ -253,7 +272,6 @@ class Game {
   }
 
   badPlay(player) {
-    debugger
     if (player.hailMary == true) {
       this.declareWinner(player, "opponent")
     } else if (player.hand.length > 1) {
@@ -270,7 +288,7 @@ class Game {
   findOpponent(player) {
     if (player == this.player1) {
       return this.player2;
-    } else if (player == this.player2) {
+    } else {
       return this.player1;
     }
   }
