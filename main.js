@@ -61,16 +61,29 @@ function userFormHandler(event) {
 
 //site set-up
 function startGame(firstplayer, secondplayer) {
-  var player1 = firstplayer || JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-  var player2 = secondplayer || JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
+  var player1 = firstplayer || "Player 1"
+  var player2 = secondplayer || "Player 2"
 
   game = new Game(player1, player2);
+  showUserNames();
   game.setGame();
   findWinCount();
   playerCardCount()
   document.querySelector(`#player-1-hand`).classList.remove('hidden');
   document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
+
+function setUpPlayerData(playerName, num) {
+  player = JSON.parse(localStorage.getItem(playerName)) || playerName;
+  if (player === undefined && num === 1) {
+    player = "Player 1";
+  }
+  if (player === undefined && num === 2) {
+    player = "Player 2";
+  }
+  return player
+}
+
 // gameplay
 function showCenterCard() {
   var color;
@@ -183,7 +196,6 @@ function saveNewUser(input) {
     } else if (newPlayer2 === undefined) {
       newPlayer2 = input;
       hideForm();
-      showUserNames();
       startGame(newPlayer1, newPlayer2);
     }
 }
@@ -203,8 +215,10 @@ function showForm() {
 function showUserNames() {
   h2 = document.querySelectorAll('h2');
 
-  h2[0].innerText = newPlayer1.name || newPlayer1;
-  h2[1].innerText = newPlayer2.name || newPlayer2;
+  if (game.player1.name !== "Player 1" || game.player2.name !== "Player 2") {
+    h2[0].innerText = game.player1.name;
+    h2[1].innerText = game.player2.name;
+  }
 }
 // recalling previous custom user
 function determineFormUser(event) {
@@ -217,27 +231,29 @@ function determineFormUser(event) {
 
 function yesSelectUser(event) {
   var player = determineFormUser(event);
-  var userInputField = document.querySelector('input')
+  var userInputField = document.querySelector('input').value
 
   if (player === "player1") {
-    newPlayer1 = JSON.parse(localStorage.getItem(userInputField.value));
+    newPlayer1 = JSON.parse(localStorage.getItem(userInputField));
     promptPlayerTwo();
   } else if(player === "player2") {
-    newPlayer2 = JSON.parse(localStorage.getItem(userInputField.value));
-    showUserNames();
-    startGame();
+    newPlayer2 = JSON.parse(localStorage.getItem(userInputField));
+
+    startGame(newPlayer1, newPlayer2);
   }
   document.querySelector('.old-user-msg').classList.add('hidden');
 }
 
 function noSelectUser(){
   var player = determineFormUser(event)
+  var inputValue = document.querySelector('input').value
 
-  if (saveUserButtonPress == 1) {
+  if (player === "player1") {
+    newPlayer1 = inputValue;
     promptPlayerTwo();
-  } else if (saveUserButtonPress == 2) {
-    player2 = document.querySelector('input').value;
-    startGame();
+  } else if (player == "player2") {
+    newPlayer2 = inputValue;
+    startGame(newPlayer1, newPlayer2);
   }
   document.querySelector('.old-user-msg').classList.add('hidden');
 }

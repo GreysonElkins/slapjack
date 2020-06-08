@@ -1,8 +1,8 @@
 class Player {
-  constructor (name, id) {
+  constructor (player, id) {
     this.id = id;
-    this.name = name.name || name
-    this.winCount = name.winCount || 0;
+    this.name = player.name || player
+    this.winCount = player.winCount || 0;
     this.hand = [];
     this.chanceToReenterGame = false;
   }
