@@ -61,8 +61,8 @@ function userFormHandler(event) {
 
 //site set-up
 function startGame(firstplayer, secondplayer) {
-  var player1 = firstplayer || "Player 1"
-  var player2 = secondplayer || "Player 2"
+  var player1 = firstplayer || setUpPlayerData("Player 1")
+  var player2 = secondplayer || setUpPlayerData("Player 2")
 
   game = new Game(player1, player2);
   showUserNames();
@@ -73,14 +73,8 @@ function startGame(firstplayer, secondplayer) {
   document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
 
-function setUpPlayerData(playerName, num) {
+function setUpPlayerData(playerName) {
   player = JSON.parse(localStorage.getItem(playerName)) || playerName;
-  if (player === undefined && num === 1) {
-    player = "Player 1";
-  }
-  if (player === undefined && num === 2) {
-    player = "Player 2";
-  }
   return player
 }
 
