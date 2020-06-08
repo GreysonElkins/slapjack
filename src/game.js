@@ -254,7 +254,7 @@ class Game {
         this.takePile(player);
     } else if (this.centerPile.length > 2
       && topCard == this.centerPile[2].type) {
-        this.message = `SANDWHICH! ${takeMsg}`;
+        this.message = `SANDWICH! ${takeMsg}`;
         this.takePile(player);
     } else {
       this.message = `BAD SLAP! ${player.name} forfeits a card to ${this.findOpponent(player).name}!`;

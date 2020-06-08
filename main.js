@@ -1,26 +1,36 @@
-// var game = new Game();
-var startSection = document.querySelector('.start-game')
-var pageCenterPile = document.querySelector('.center-pile')
-var playerForm = document.querySelector('.player-form')
+var startSection = document.querySelector('.start-game');
+var pageCenterPile = document.querySelector('.center-pile');
+var playerForm = document.querySelector('.player-form');
 var h1 = document.querySelector('h1');
 
-var game = new Game(player1, player2);
 var currentPlayer;
-var player1 = "Player 1";
-var player2 = "Player 2";
+var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
+var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
 var buttonPress = 0;
+// var game = new Game(player1, player2);
 
-window.addEventListener('keydown', handleKeydown);
 startSection.addEventListener('click', startHandler);
 playerForm.addEventListener('click', formHandler);
-
+window.addEventListener('keydown', handleKeydown);
 
 
 //event handlers
+
+function startHandler(event) {
+  if (event.target.id == 'start') {
+    startUpGame();
+    startSection.classList.add('hidden');
+  } else if (event.target.id == 'make-new-players') {
+    showForm();
+    startSection.classList.add('hidden');
+  }
+
+}
+
 function formHandler(event) {
   if (event.target.id == "save-user") {
     saveUser();
-  } else if (event.target.id == "yes" && || event.target.id == "no") {
+  } else if (event.target.id == "yes" || event.target.id == "no") {
     userDataSelection(event);
   }
 }
@@ -49,13 +59,14 @@ function gameHandler(keypress) {
     removeCenterPile();
     textToScreen();
     playerCardCount();
+
   }
 }
 //site set-up
-function startUp() {
+function startUpGame() {
   game = new Game(player1, player2);
   game.setGame();
-  recallStorage();
+  findWinCount();
   playerCardCount()
   document.querySelector(`#player-1`).classList.remove('hidden');
   document.querySelector(`#player-2`).classList.remove('hidden');
@@ -78,7 +89,7 @@ function showCenterCard() {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  showOrHideHand();
+  showOrHideHand(currentPlayer);
 }
 
 function removeCenterPile() {
@@ -86,13 +97,13 @@ function removeCenterPile() {
   pageCenterPile.innerHTML = "";
   }
 
-  showOrHideHand();
+  showOrHideHand(currentPlayer);
 }
 
-function showOrHideHand(){
-  var hand = document.querySelector(`#player-${currentPlayer.id}`)
+function showOrHideHand(whichPlayer){
+  var hand = document.querySelector(`#player-${whichPlayer.id}`)
 
-  if (currentPlayer.hand[0] == undefined) {
+  if (whichPlayer.hand[0] == undefined) {
     hand.classList.add('hidden');
   } else {
     hand.classList.remove('hidden');
@@ -104,7 +115,7 @@ function textToScreen() {
   h1.classList.remove('hidden');
 
   if (game.message.includes('win')) {
-    recallStorage();
+    findWinCount();
   }
 }
 
@@ -116,11 +127,22 @@ function playerCardCount() {
     document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
 
     document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
+
+    showOrHideHand(game.findOpponent(currentPlayer));
 }
 
-function recallStorage() {
-  document.getElementById(`player-1-wins`).innerText = `${player1.winCount || 0} Wins`;
-  document.getElementById(`player-2-wins`).innerText = `${player2.winCount || 0} Wins`;
+function findWinCount() {
+  for (i = 1; i < 3; i++) {
+    var subject = player1;
+    if (i == 2) {
+      subject = player2;
+    }
+    if (subject.winCount == 1) {
+      document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Win`;
+    } else {
+      document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Wins`;
+    }
+  }
 }
 //user creation
 function saveUser() {
@@ -142,10 +164,10 @@ function saveUser() {
   if (checkForUser(player2) == false && buttonPress == 2) {
       hideForm();
       showUserNames();
-      startUp();
-    }
+      startUpGame();
   }
 }
+
 
 function checkForUser(input) {
   if (localStorage.getItem(input) !== null) {
@@ -173,12 +195,12 @@ var player;
   } else if(event.target.id = "yes" && buttonPress == 2) {
     player2 = JSON.parse(localStorage.getItem(player));
     showUserNames();
-    startUp();
+    startUpGame();
   } else if (event.target.id = "no" && buttonPress == 1) {
     promptPlayerTwo();
   } else if (event.target.id = "no" && buttonPress == 2) {
     player2 = document.querySelector('input').value;
-    startUp();
+    startUpGame();
   }
 
   document.querySelector('.old-user-msg').classList.add('hidden');

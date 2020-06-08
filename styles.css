@@ -15,7 +15,7 @@ body {
 header {
   align-items: center;
   display: flex;
-  height: 7em;
+  height: 15em;
   justify-content: center;
 }
 
@@ -32,6 +32,11 @@ h2 {
 /* player forms */
 .start-game {
   margin: 4em auto 0px auto;
+  text-align: center;
+}
+.start-game > p {
+  font-size: .9em;
+  margin: .2em;
 }
 .player-form {
   align-items: center;
@@ -88,7 +93,7 @@ img {
 }
 
 .player-1-info {
-  padding-right: 17em;
+  padding-right: 41em;
 }
 
 p {
