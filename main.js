@@ -59,7 +59,6 @@ function gameHandler(keypress) {
     removeCenterPile();
     textToScreen();
     playerCardCount();
-
   }
 }
 //site set-up
@@ -114,7 +113,7 @@ function textToScreen() {
   h1.innerText = `${game.message}`;
   h1.classList.remove('hidden');
 
-  if (game.message.includes('win')) {
+  if (game.message.includes('wins!')) {
     findWinCount();
   }
 }
@@ -132,6 +131,10 @@ function playerCardCount() {
 }
 
 function findWinCount() {
+  debugger
+  player1 = game.player1
+  player2 = game.player2
+
   for (i = 1; i < 3; i++) {
     var subject = player1;
     if (i == 2) {

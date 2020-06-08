@@ -16,7 +16,8 @@ class Player {
   }
 
   retrieveFromStorage() {
-    return JSON.parse(localStorage.getItem(this.name));
+    var update = JSON.parse(localStorage.getItem(this.name));
+    this.winCount = update.winCount;
   }
 }
 
