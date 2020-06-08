@@ -4,7 +4,7 @@ class Player {
     this.name = name.name || name
     this.winCount = name.winCount || 0;
     this.hand = [];
-    this.hailMary = false;
+    this.chanceToReenterGame = false;
   }
 
   playCard() {

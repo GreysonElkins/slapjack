@@ -16,10 +16,10 @@ window.addEventListener('keydown', handleKeydown);
 //event handlers
 
 function startHandler(event) {
-  if (event.target.id == 'start') {
+  if (event.target.id === 'start') {
     startUpGame();
     startSection.classList.add('hidden');
-  } else if (event.target.id == 'make-new-players') {
+  } else if (event.target.id === 'make-new-players') {
     showForm();
     startSection.classList.add('hidden');
   }
@@ -27,9 +27,9 @@ function startHandler(event) {
 }
 
 function formHandler(event) {
-  if (event.target.id == "save-user") {
+  if (event.target.id === "save-user") {
     saveUser();
-  } else if (event.target.id == "yes" || event.target.id == "no") {
+  } else if (event.target.id === "yes" || event.target.id === "no") {
     userDataSelection(event);
   }
 }
@@ -37,23 +37,23 @@ function formHandler(event) {
 function handleKeydown(event) {
   var keypress = event.which;
 
-  if (keypress == 81 || keypress == 70) {
+  if (keypress === 81 || keypress === 70) {
     currentPlayer = game.player1;
-  } else if (keypress == 80 || keypress == 74) {
+  } else if (keypress === 80 || keypress === 74) {
     currentPlayer = game.player2;
-  } else if (keypress == 66) {
+  } else if (keypress === 66) {
     game.addWild();
   }
   gameHandler(keypress);
 }
 
 function gameHandler(keypress) {
-  if (keypress == 81 || keypress == 80) {
+  if (keypress === 81 || keypress === 80) {
     hideGameMessage();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
     playerCardCount();
-  } else if (keypress == 70 || keypress == 74) {
+  } else if (keypress === 70 || keypress === 74) {
     game.slap(currentPlayer);
     removeCenterPile();
     textToScreen();
@@ -73,13 +73,13 @@ function startUpGame() {
 function showCenterCard() {
   var color;
 
-  if (game.whoseTurn.id == "1") {
+  if (game.whoseTurn.id === "1") {
     color = "#EF476F";
   } else {
     color = "#06D6A0";
   }
 
-  if (game.centerPile[0] !== undefined) {
+  if (game.centerPile[0] !=== undefined) {
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
@@ -91,7 +91,7 @@ function showCenterCard() {
 }
 
 function removeCenterPile() {
-  if (game.centerPile[0] == undefined) {
+  if (game.centerPile[0] === undefined) {
   pageCenterPile.innerHTML = "";
   }
 
@@ -101,7 +101,7 @@ function removeCenterPile() {
 function showOrHideHand(whichPlayer){
   var hand = document.querySelector(`#player-${whichPlayer.id}`)
 
-  if (whichPlayer.hand[0] == undefined) {
+  if (whichPlayer.hand[0] === undefined) {
     hand.classList.add('hidden');
   } else {
     hand.classList.remove('hidden');
@@ -135,10 +135,10 @@ function findWinCount() {
   var subject = player1;
 
   for (i = 1; i < 3; i++) {
-    if (i == 2) {
+    if (i === 2) {
       subject = player2;
     }
-    if (subject.winCount == 1) {
+    if (subject.winCount === 1) {
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Win`;
     } else {
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Wins`;
@@ -153,27 +153,27 @@ function saveUser() {
   document.querySelector('input').value = "";
   buttonPress++;
 
-  if (inputValue === "" && buttonPress == 1) {
+  if (inputValue === "" && buttonPress === 1) {
     player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
     hideForm();
     showUserNames();
     startUpGame();
-  } else if (buttonPress == 1) {
+  } else if (buttonPress === 1) {
     player1 = inputValue;
   }
-  if (checkForUser(player1) == false && buttonPress == 1) {
+  if (checkForUser(player1) === false && buttonPress === 1) {
     promptPlayerTwo();
   }
 
-  if (inputValue == "" && buttonPress == 2) {
+  if (inputValue === "" && buttonPress === 2) {
     player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
     hideForm();
     showUserNames();
     startUpGame();
-  } else if (buttonPress == 2) {
+  } else if (buttonPress === 2) {
     player2 = inputValue;
   }
-  if (checkForUser(player2) == false && buttonPress == 2) {
+  if (checkForUser(player2) === false && buttonPress === 2) {
       hideForm();
       showUserNames();
       startUpGame();
@@ -201,16 +201,16 @@ var player;
     player = player2;
   }
 
-  if (event.target.id = "yes" && buttonPress == 1) {
+  if (event.target.id === "yes" && buttonPress == 1) {
     player1 = JSON.parse(localStorage.getItem(player));
     promptPlayerTwo();
-  } else if(event.target.id = "yes" && buttonPress == 2) {
+  } else if(event.target.id === "yes" && buttonPress == 2) {
     player2 = JSON.parse(localStorage.getItem(player));
     showUserNames();
     startUpGame();
-  } else if (event.target.id = "no" && buttonPress == 1) {
+  } else if (event.target.id === "no" && buttonPress == 1) {
     promptPlayerTwo();
-  } else if (event.target.id = "no" && buttonPress == 2) {
+  } else if (event.target.id === "no" && buttonPress == 2) {
     player2 = document.querySelector('input').value;
     startUpGame();
   }

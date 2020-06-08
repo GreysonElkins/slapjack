@@ -22,7 +22,7 @@ class Game {
   dealCards() {
     var howMany = this.deck.length;
     for (var i = 0; i < howMany; i++){
-      if (i % 2 == 0) {
+      if (i % 2 === 0) {
         this.player2.hand.push(this.deck.shift());
       } else {
         this.player1.hand.push(this.deck.shift());
@@ -43,8 +43,8 @@ class Game {
     this.player2.hand = [];
     this.centerPile = [];
 
-    this.player1.hailMary = false;
-    this.player2.hailMary = false;
+    this.player1.chanceToReenterGame = false;
+    this.player2.chanceToReenterGame = false;
 
     this.setGame();
   }
@@ -52,10 +52,10 @@ class Game {
   addWild() {
     var randomPlayerNumber = Math.floor(Math.random() * 2);
 
-    if (randomPlayerNumber = 1 && this.wildCard !== undefined) {
+    if (randomPlayerNumber === 1 && this.wildCard !=== undefined) {
       this.player1.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
-    } else if (this.wildCard !== undefined) {
+    } else if (this.wildCard !=== undefined) {
       this.player2.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
     }
@@ -63,7 +63,7 @@ class Game {
   }
 //player moves
   movePlayersCard(player) {
-    if (this.player1.hailMary && this.player2.hailMary) {
+    if (this.player1.chanceToReenterGame && this.player2.chanceToReenterGame) {
       this.resetDeck();
       this.dealCards();
     }
@@ -72,9 +72,9 @@ class Game {
     } else if (player == this.whoseTurn &&
       player.hand.length === 1) {
         this.centerPile.unshift(player.playCard());
-        player.hailMary = true;
+        player.chanceToReenterGame = true;
     }
-    if (this.findOpponent(player).hailMary == false) {
+    if (this.findOpponent(player).chanceToReenterGame === false) {
       this.whoseTurn = this.findOpponent(player);
     }
   }
@@ -89,7 +89,7 @@ class Game {
       takeMsg = `${player.name} takes the wild Queen!`
     }
 
-    if (this.centerPile.length > 0 && topCard == trumpCard) {
+    if (this.centerPile.length > 0 && topCard === trumpCard) {
       this.message = `SLAPJACK! ${takeMsg}`;
       this.takePile(player);
     } else if (this.centerPile.length > 1 &&
@@ -110,21 +110,21 @@ class Game {
     player.hand = (player.hand.concat(this.centerPile));
     this.centerPile = [];
     this.shuffle(player.hand);
-    player.hailMary = false;
+    player.chanceToReenterGame = false;
     this.checkWin(player);
   }
 
   badPlay(player) {
-    if (player.hailMary == true) {
+    if (player.chanceToReenterGame === true) {
       this.declareWinner(player, "opponent")
     } else if (player.hand.length > 1) {
       this.findOpponent(player).hand.push(player.hand[0]);
-      this.findOpponent(player).hailMary = false;
+      this.findOpponent(player).chanceToReenterGame = false;
       player.hand.splice(0, 1);
-    } else if (player.hand.length == 1) {
+    } else if (player.hand.length === 1) {
       this.findOpponent(player).hand.concat(player.hand);
       player.hand = [];
-      player.hailMary = true;
+      player.chanceToReenterGame = true;
     }
   }
   //game functions
@@ -138,7 +138,7 @@ class Game {
 
   checkWin(player){
     var opponent = this.findOpponent(player)
-    if (opponent.hailMary == true){
+    if (opponent.chanceToReenterGame === true){
       this.declareWinner(player, "self");
     }
   }
