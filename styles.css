@@ -3,57 +3,61 @@
 }
 
 body {
+  align-content: center;
   background-image: url("./assets/background.png");
-  /* background-repeat: repeat-x; */
-  background-size: 128% 128%;
-  margin: 0em;
+  background-size: 100vw 100vh;
   display: flex;
   flex-direction: column;
-  align-content: center;
-  background-color: #9D5C63;
+  margin: 0em;
 }
 
 header {
-  display: flex;
-  justify-content: center;
   align-items: center;
+  display: flex;
   height: 7em;
+  justify-content: center;
 }
 
 h1 {
-  color: #5C415D;
   font-size: 3em;
-  text-align: center;
   margin: 0em;
+  text-align: center;
 }
 
+h1,
+p {
+  color: #5C415D;
+}
+/* card section */
 .playing-field {
-  margin-top: 1.2em;
   display: flex;
   justify-content: space-around;
+  margin-top: 1.2em;
 }
 
-.center-field,
+.center-pile,
 .player-1-hand,
 .player-2-hand {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  width: 18em;
   height: 32em;
+  width: 18em;
 }
 
+img {
+  border-radius: 30px;
+  width: 18em;
+}
+
+.player-1-hand > img {
+  box-shadow: 0 0 13px 0px #06D6A0;
+}
+
+.player-2-hand > img {
+  box-shadow: 0 0 13px 0px #EF476F;
+}
+/* player info */
 .game-info {
     display: flex;
     justify-content: space-around;
-}
-
-p > #player1wins{
-  margin: 1em 18em 0em 0em;
-}
-
-p > #player2wins{
-  margin: 1em 0em 0em 18em;
 }
 
 .player-1-info,
@@ -69,29 +73,10 @@ p > #player2wins{
   padding-right: 30em;
 }
 
-.center-pile {
-  width: 18em;
-}
-
 p {
-  color: #5C415D;
   font-size: 1.2em;
-  text-align:center;
 }
-
-img {
-  border-radius: 30px;
-  width: 18em;
-}
-
-.player-1-hand > img {
-  box-shadow: 0 0 13px 0px #06D6A0;
-}
-
-.player-2-hand > img {
-  box-shadow: 0 0 13px 0px #EF476F;
-}
-
+/* misc */
 .hidden {
   display: none;
 }

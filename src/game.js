@@ -1,5 +1,3 @@
-// players save to local.storage, game can check local storage and recieve them
-
 class Game {
   constructor() {
     this.player1 = new Player("1");
@@ -195,10 +193,9 @@ class Game {
   }
 
   resetDeck() {
-    debugger
-    var playerHands = this.player1.hand.concat(this.player2.hand)
-    this.deck = playerHands.concat(this.centerPile);
+    this.deck = this.player1.hand.concat(this.player2.hand).concat(this.centerPile);
     this.shuffle(this.deck);
+
     this.player1.hand = [];
     this.player2.hand = [];
     this.centerPile = [];
@@ -230,18 +227,20 @@ class Game {
     var takeMsg = `Player ${player.id} takes the pile!`
     var topCard = this.centerPile[0].type;
 
-    if (topCard == "jack"){
+    if (this.centerPile.length > 0 && topCard == "jack") {
       this.message = `SLAPJACK! ${takeMsg}`;
       this.takePile(player);
-    } else if (topCard == this.centerPile[1].type) {
-      this.message = `DOUBLE! ${takeMsg}`;
-      this.takePile(player);
-    } else if (topCard == this.centerPile[2].type) {
-      this.message = `SANDWHICH! ${takeMsg}`;
-      this.takePile(player);
+    } else if (this.centerPile.length > 1 &&
+      topCard == this.centerPile[1].type) {
+        this.message = `DOUBLE! ${takeMsg}`;
+        this.takePile(player);
+    } else if (this.centerPile.length > 2
+      && topCard == this.centerPile[2].type) {
+        this.message = `SANDWHICH! ${takeMsg}`;
+        this.takePile(player);
     } else {
-      this.badPlay(player);
       this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
+      this.badPlay(player);
     }
   }
 
@@ -254,14 +253,16 @@ class Game {
   }
 
   badPlay(player) {
-    if (player.hand.length > 0) {
+    debugger
+    if (player.hailMary == true) {
+      this.declareWinner(player, "opponent")
+    } else if (player.hand.length > 1) {
       this.findOpponent(player).hand.push(player.hand[0]);
       this.findOpponent(player).hailMary = false;
       player.hand.splice(0, 1);
-    } else if (player.hailMary == true) {
-      player.hailMary = false;
-      this.declareWinner(player, "opponent");
-    } else if (player.hand === []) {
+    } else if (player.hand.length == 1) {
+      this.findOpponent(player).hand.concat(player.hand);
+      player.hand = [];
       player.hailMary = true;
     }
   }
