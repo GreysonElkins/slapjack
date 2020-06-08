@@ -1,7 +1,7 @@
 class Game {
-  constructor() {
-    this.player1 = new Player("1");
-    this.player2 = new Player("2");
+  constructor(name1, name2) {
+    this.player1 = new Player(name1, "1");
+    this.player2 = new Player(name2, "2");
     this.deck = [
       {type: "ace",
       suit: "blue",
@@ -209,13 +209,14 @@ class Game {
   addWild() {
     var randomPlayerNumber = Math.floor(Math.random() * 2);
 
-    if (randomPlayerNumber = 1) {
+    if (randomPlayerNumber = 1 && this.wildCard !== undefined) {
       this.player1.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
-    } else {
+    } else if (this.wildCard !== undefined) {
       this.player2.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
     }
+    this.wildCard = undefined;
   }
 //player moves
   movePlayersCard(player) {
@@ -236,14 +237,13 @@ class Game {
   }
 
   slap(player){
-    debugger
-    var takeMsg = `Player ${player.id} takes the pile!`
+    var takeMsg = `${player.name} takes the pile!`
     var topCard = this.centerPile[0].type;
     var trumpCard = "jack";
 
     if (this.centerPile.includes(this.wildCard)) {
       trumpCard = "queen"
-      takeMsg = `Player ${player.id} takes the wild Queen!`
+      takeMsg = `${player.name} takes the wild Queen!`
     }
 
     if (this.centerPile.length > 0 && topCard == trumpCard) {
@@ -255,10 +255,10 @@ class Game {
         this.takePile(player);
     } else if (this.centerPile.length > 2
       && topCard == this.centerPile[2].type) {
-        this.message = `SANDWHICH! ${takeMsg}`;
+        this.message = `SANDWICH! ${takeMsg}`;
         this.takePile(player);
     } else {
-      this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
+      this.message = `BAD SLAP! ${player.name} forfeits a card to ${this.findOpponent(player).name}!`;
       this.badPlay(player);
     }
   }
@@ -310,6 +310,6 @@ class Game {
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
-    this.message = `Player ${winner.id} wins!`;
+    this.message = `${winner.name} wins!`;
   }
 }
