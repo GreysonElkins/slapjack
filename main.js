@@ -1,4 +1,4 @@
-var startSection = document.querySelector('.start-game');
+var startAppSection = document.querySelector('.start-game');
 var pageCenterPile = document.querySelector('.center-pile');
 var playerForm = document.querySelector('.player-form');
 var h1 = document.querySelector('h1');
@@ -6,31 +6,32 @@ var h1 = document.querySelector('h1');
 var currentPlayer;
 var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
 var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
-var buttonPress = 0;
+var saveUserButtonPress = 0;
 
-startSection.addEventListener('click', startHandler);
+startAppSection.addEventListener('click', startAppHandler);
 playerForm.addEventListener('click', formHandler);
 window.addEventListener('keydown', handleKeydown);
 
 
 //event handlers
 
-function startHandler(event) {
+function startAppHandler(event) {
   if (event.target.id === 'start') {
     startUpGame();
-    startSection.classList.add('hidden');
+    startAppSection.classList.add('hidden');
   } else if (event.target.id === 'make-new-players') {
     showForm();
-    startSection.classList.add('hidden');
+    startAppSection.classList.add('hidden');
   }
-
 }
 
 function formHandler(event) {
   if (event.target.id === "save-user") {
     saveUser();
-  } else if (event.target.id === "yes" || event.target.id === "no") {
-    userDataSelection(event);
+  } else if (event.target.id === "yes") {
+    yesSelectUser(event);
+  } else if (event.target.id === "no") {
+    noSelectUser(event);
   }
 }
 
@@ -158,29 +159,29 @@ function saveUser() {
   var inputValue = document.querySelector('input').value
 
   document.querySelector('input').value = "";
-  buttonPress++;
+  saveUserButtonPress++;
 
-  if (inputValue === "" && buttonPress === 1) {
+  if (inputValue === "" && saveUserButtonPress === 1) {
     player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
     hideForm();
     showUserNames();
     startUpGame();
-  } else if (buttonPress === 1) {
+  } else if (saveUserButtonPress === 1) {
     player1 = inputValue;
   }
-  if (checkForUser(player1) === false && buttonPress === 1) {
+  if (checkForUser(player1) === false && saveUserButtonPress === 1) {
     promptPlayerTwo();
   }
 
-  if (inputValue === "" && buttonPress === 2) {
+  if (inputValue === "" && saveUserButtonPress === 2) {
     player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
     hideForm();
     showUserNames();
     startUpGame();
-  } else if (buttonPress === 2) {
+  } else if (saveUserButtonPress === 2) {
     player2 = inputValue;
   }
-  if (checkForUser(player2) === false && buttonPress === 2) {
+  if (checkForUser(player2) === false && saveUserButtonPress === 2) {
       hideForm();
       showUserNames();
       startUpGame();
@@ -199,29 +200,37 @@ function checkForUser(input) {
   }
 }
 
-function userDataSelection(event) {
-var player;
-
+function determineFormUser(event) {
   if (document.querySelector('#direction').innerText.includes('1')) {
-    player = player1;
+    return player1;
   } else {
-    player = player2;
+    return player2;
   }
+}
 
-  if (event.target.id === "yes" && buttonPress == 1) {
+function yesSelectUser(event) {
+  var player = determineFormUser(event);
+
+  if (saveUserButtonPress == 1) {
     player1 = JSON.parse(localStorage.getItem(player));
     promptPlayerTwo();
-  } else if(event.target.id === "yes" && buttonPress == 2) {
+  } else if(saveUserButtonPress == 2) {
     player2 = JSON.parse(localStorage.getItem(player));
     showUserNames();
     startUpGame();
-  } else if (event.target.id === "no" && buttonPress == 1) {
+  }
+  document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function noSelectUser(){
+  var player = determineFormUser(event)
+
+  if (saveUserButtonPress == 1) {
     promptPlayerTwo();
-  } else if (event.target.id === "no" && buttonPress == 2) {
+  } else if (saveUserButtonPress == 2) {
     player2 = document.querySelector('input').value;
     startUpGame();
   }
-
   document.querySelector('.old-user-msg').classList.add('hidden');
 }
 
