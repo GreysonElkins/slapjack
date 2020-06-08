@@ -116,7 +116,7 @@ function removeCenterPile() {
 }
 
 function hideHand(whichPlayer){
-  var hand = document.querySelector(`#player-${whichPlayer.id}`)
+  var hand = document.querySelector(`#player-${whichPlayer.id}-hand`)
 
   if (whichPlayer.hand[0] === undefined) {
     hand.classList.add('hidden');
@@ -124,7 +124,7 @@ function hideHand(whichPlayer){
 }
 
 function showHand(whichPlayer) {
-  var hand = document.querySelector(`#player-${whichPlayer.id}`);
+  var hand = document.querySelector(`#player-${whichPlayer.id}-hand`);
 
   if (whichPlayer.hand[0] !== undefined) {
     hand.classList.remove('hidden');
