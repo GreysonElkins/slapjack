@@ -1,23 +1,20 @@
 var startAppSection = document.querySelector('.start-game');
 var pageCenterPile = document.querySelector('.center-pile');
-var playerForm = document.querySelector('.player-form');
+var userForm = document.querySelector('.player-form');
 var h1 = document.querySelector('h1');
 
 var currentPlayer;
-var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
-var saveUserButtonPress = 0;
+var newPlayer1;
+var newPlayer2;
 
 startAppSection.addEventListener('click', startAppHandler);
-playerForm.addEventListener('click', formHandler);
-window.addEventListener('keydown', handleKeydown);
-
+userForm.addEventListener('click', userFormHandler);
+window.addEventListener('keydown', handleGameKeyDown);
 
 //event handlers
-
 function startAppHandler(event) {
   if (event.target.id === 'start') {
-    startUpGame();
+    startGame();
     startAppSection.classList.add('hidden');
   } else if (event.target.id === 'make-new-players') {
     showForm();
@@ -25,17 +22,7 @@ function startAppHandler(event) {
   }
 }
 
-function formHandler(event) {
-  if (event.target.id === "save-user") {
-    saveUser();
-  } else if (event.target.id === "yes") {
-    yesSelectUser(event);
-  } else if (event.target.id === "no") {
-    noSelectUser(event);
-  }
-}
-
-function handleKeydown(event) {
+function handleGameKeyDown(event) {
   var keypress = event.which;
 
   if (keypress === 81 || keypress === 70) {
@@ -61,14 +48,29 @@ function gameHandler(keypress) {
     playerCardCount();
   }
 }
+
+function userFormHandler(event) {
+  if (event.target.id === "save-user") {
+    checkUserInput();
+  } else if (event.target.id === "yes") {
+    yesSelectUser(event);
+  } else if (event.target.id === "no") {
+    noSelectUser(event);
+  }
+}
+
+
 //site set-up
-function startUpGame() {
+function startGame(firstplayer, secondplayer) {
+  var player1 = firstplayer || JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
+  var player2 = firstplayer || JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
+
   game = new Game(player1, player2);
   game.setGame();
   findWinCount();
   playerCardCount()
-  document.querySelector(`#player-1`).classList.remove('hidden');
-  document.querySelector(`#player-2`).classList.remove('hidden');
+  document.querySelector(`#player-1-hand`).classList.remove('hidden');
+  document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
 
 function showCenterCard() {
@@ -128,7 +130,7 @@ function textToScreen() {
 function hideGameMessage() {
   h1.classList.add('hidden');
 }
-// user info
+// displaying user info
 function playerCardCount() {
     document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
 
@@ -153,41 +155,15 @@ function findWinCount() {
     }
   }
 }
-//user creation
-function saveUser() {
-  debugger
-  var inputValue = document.querySelector('input').value
+//user creation -"I finished this and now I'm wishing I had put these methods in the player class :(, maybe tomorrow"
+function checkUserInput() {
+  var userInputField = document.querySelector('input')
 
-  document.querySelector('input').value = "";
-  saveUserButtonPress++;
-
-  if (inputValue === "" && saveUserButtonPress === 1) {
-    player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-    hideForm();
-    showUserNames();
-    startUpGame();
-  } else if (saveUserButtonPress === 1) {
-    player1 = inputValue;
-  }
-  if (checkForUser(player1) === false && saveUserButtonPress === 1) {
-    promptPlayerTwo();
-  }
-
-  if (inputValue === "" && saveUserButtonPress === 2) {
-    player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
-    hideForm();
-    showUserNames();
-    startUpGame();
-  } else if (saveUserButtonPress === 2) {
-    player2 = inputValue;
-  }
-  if (checkForUser(player2) === false && saveUserButtonPress === 2) {
-      hideForm();
-      showUserNames();
-      startUpGame();
-  }
+  if (userInputField.value !== "" &&
+  checkForUser(userInputField.value) === false) {
+    saveNewUser(userInputField.value)
+    }
 }
-
 
 function checkForUser(input) {
   if (localStorage.getItem(input) !== null) {
@@ -200,46 +176,16 @@ function checkForUser(input) {
   }
 }
 
-function determineFormUser(event) {
-  if (document.querySelector('#direction').innerText.includes('1')) {
-    return player1;
-  } else {
-    return player2;
-  }
-}
-
-function yesSelectUser(event) {
-  var player = determineFormUser(event);
-
-  if (saveUserButtonPress == 1) {
-    player1 = JSON.parse(localStorage.getItem(player));
-    promptPlayerTwo();
-  } else if(saveUserButtonPress == 2) {
-    player2 = JSON.parse(localStorage.getItem(player));
-    showUserNames();
-    startUpGame();
-  }
-  document.querySelector('.old-user-msg').classList.add('hidden');
-}
-
-function noSelectUser(){
-  var player = determineFormUser(event)
-
-  if (saveUserButtonPress == 1) {
-    promptPlayerTwo();
-  } else if (saveUserButtonPress == 2) {
-    player2 = document.querySelector('input').value;
-    startUpGame();
-  }
-  document.querySelector('.old-user-msg').classList.add('hidden');
-}
-
-function promptPlayerTwo() {
-  document.querySelector('input').value = "";
-
-  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
-
-  showForm();
+function saveNewUser(input) {
+    if (newPlayer1 === undefined) {
+      newPlayer1 = input;
+      promptPlayerTwo();
+    } else if (newPlayer2 === undefined) {
+      newPlayer2 = input;
+      hideForm();
+      showUserNames();
+      startGame(newPlayer1, newPlayer2);
+    }
 }
 
 function hideForm() {
@@ -257,8 +203,48 @@ function showForm() {
 function showUserNames() {
   h2 = document.querySelectorAll('h2');
 
-  h2[0].innerText = player1.name || player1;
-  h2[1].innerText = player2.name || player2;
+  h2[0].innerText = newPlayer1;
+  h2[1].innerText = newPlayer2;
+}
+// recalling previous custom user
+function determineFormUser(event) {
+  if (document.querySelector('#direction').innerText.includes('1')) {
+    return player1;
+  } else {
+    return player2;
+  }
 }
 
-//
+function yesSelectUser(event) {
+  var player = determineFormUser(event);
+
+  if (newPlayer1 == undefined) {
+    newPlayer1 = JSON.parse(localStorage.getItem(player));
+    promptPlayerTwo();
+  } else if(newPlayer2 == undefined) {
+    newPlayer2 = JSON.parse(localStorage.getItem(player));
+    showUserNames();
+    startGame();
+  }
+  document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function noSelectUser(){
+  var player = determineFormUser(event)
+
+  if (saveUserButtonPress == 1) {
+    promptPlayerTwo();
+  } else if (saveUserButtonPress == 2) {
+    player2 = document.querySelector('input').value;
+    startGame();
+  }
+  document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function promptPlayerTwo() {
+  document.querySelector('input').value = "";
+
+  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
+
+  showForm();
+}
