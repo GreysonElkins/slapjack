@@ -62,7 +62,7 @@ function userFormHandler(event) {
 //site set-up
 function startGame(firstplayer, secondplayer) {
   var player1 = firstplayer || JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-  var player2 = firstplayer || JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
+  var player2 = secondplayer || JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
 
   game = new Game(player1, player2);
   game.setGame();
@@ -71,7 +71,7 @@ function startGame(firstplayer, secondplayer) {
   document.querySelector(`#player-1-hand`).classList.remove('hidden');
   document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
-// gameplay methods
+// gameplay
 function showCenterCard() {
   var color;
 
@@ -203,26 +203,27 @@ function showForm() {
 function showUserNames() {
   h2 = document.querySelectorAll('h2');
 
-  h2[0].innerText = newPlayer1;
-  h2[1].innerText = newPlayer2;
+  h2[0].innerText = newPlayer1.name || newPlayer1;
+  h2[1].innerText = newPlayer2.name || newPlayer2;
 }
 // recalling previous custom user
 function determineFormUser(event) {
   if (document.querySelector('#direction').innerText.includes('1')) {
-    return player1;
+    return "player1";
   } else {
-    return player2;
+    return "player2";
   }
 }
 
 function yesSelectUser(event) {
   var player = determineFormUser(event);
+  var userInputField = document.querySelector('input')
 
-  if (newPlayer1 == undefined) {
-    newPlayer1 = JSON.parse(localStorage.getItem(player));
+  if (player === "player1") {
+    newPlayer1 = JSON.parse(localStorage.getItem(userInputField.value));
     promptPlayerTwo();
-  } else if(newPlayer2 == undefined) {
-    newPlayer2 = JSON.parse(localStorage.getItem(player));
+  } else if(player === "player2") {
+    newPlayer2 = JSON.parse(localStorage.getItem(userInputField.value));
     showUserNames();
     startGame();
   }
