@@ -131,12 +131,11 @@ function playerCardCount() {
 }
 
 function findWinCount() {
-  debugger
   player1 = game.player1
   player2 = game.player2
+  var subject = player1;
 
   for (i = 1; i < 3; i++) {
-    var subject = player1;
     if (i == 2) {
       subject = player2;
     }
