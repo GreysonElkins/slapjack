@@ -1,30 +1,26 @@
 // var game = new Game();
+var startSection = document.querySelector('.start-game')
 var pageCenterPile = document.querySelector('.center-pile')
 var playerForm = document.querySelector('.player-form')
-// var yesOrNo = document.getElementById('user-msg');
 var h1 = document.querySelector('h1');
-var buttonPress = 0;
+
+var game = new Game(player1, player2);
 var currentPlayer;
 var player1 = "Player 1";
 var player2 = "Player 2";
-var game = new Game(player1, player2);
+var buttonPress = 0;
 
 window.addEventListener('keydown', handleKeydown);
+startSection.addEventListener('click', startHandler);
 playerForm.addEventListener('click', formHandler);
 
-function startUp() {
-  game = new Game(player1, player2);
-  game.setGame();
-  recallStorage();
-  playerCardCount()
-  document.querySelector(`#player-1`).classList.remove('hidden');
-  document.querySelector(`#player-2`).classList.remove('hidden');
-}
 
+
+//event handlers
 function formHandler(event) {
   if (event.target.id == "save-user") {
     saveUser();
-  } else if (event.target.id == "yes" || event.target.id == "no") {
+  } else if (event.target.id == "yes" && || event.target.id == "no") {
     userDataSelection(event);
   }
 }
@@ -55,7 +51,16 @@ function gameHandler(keypress) {
     playerCardCount();
   }
 }
-//visualise cards
+//site set-up
+function startUp() {
+  game = new Game(player1, player2);
+  game.setGame();
+  recallStorage();
+  playerCardCount()
+  document.querySelector(`#player-1`).classList.remove('hidden');
+  document.querySelector(`#player-2`).classList.remove('hidden');
+}
+
 function showCenterCard() {
   var color;
 
@@ -106,7 +111,6 @@ function textToScreen() {
 function hideGameMessage() {
   h1.classList.add('hidden');
 }
-
 // user info
 function playerCardCount() {
     document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
@@ -115,57 +119,31 @@ function playerCardCount() {
 }
 
 function recallStorage() {
-  var domWins;
-
   document.getElementById(`player-1-wins`).innerText = `${player1.winCount || 0} Wins`;
-  document.getElementById(`player-2-wins`).innerText = `${player2.winCount || 0} Wins`
-  // for (i = 1; i < 3; i++) {
-    // var storage = JSON.parse(localStorage.getItem(`Player ${i}`));
-    // domWins = `player-${i}-wins`;
-
-  // }
+  document.getElementById(`player-2-wins`).innerText = `${player2.winCount || 0} Wins`;
 }
 //user creation
 function saveUser() {
   var inputValue = document.querySelector('input').value
+
   document.querySelector('input').value = "";
   buttonPress++;
 
   if (buttonPress == 1) {
     player1 = inputValue;
-    if (checkForUser(player1) == false) {
-      promptPlayerTwo();
   }
+  if (checkForUser(player1) == false && buttonPress == 1) {
+    promptPlayerTwo();
   }
+
   if (buttonPress == 2) {
     player2 = inputValue;
-    if (checkForUser(player2) == false) {
+  }
+  if (checkForUser(player2) == false && buttonPress == 2) {
       hideForm();
       showUserNames();
       startUp();
     }
-
-    // showUserNames();
-    // startUp();
-  }
-}
-
-function showUserNames() {
-  h2 = document.querySelectorAll('h2');
-
-  h2[0].innerText = player1.name || player1;
-  h2[1].innerText = player2.name || player2;
-}
-
-function hideForm() {
-  for (i = 0; i < 3; i++){
-  document.querySelectorAll('.form-element')[i].classList.add('hidden');
-  }
-}
-
-function showForm() {
-  for (i = 0; i < 3; i++) {
-  document.querySelectorAll('.form-element')[i].classList.remove('hidden');
   }
 }
 
@@ -178,14 +156,6 @@ function checkForUser(input) {
   } else {
     return false;
   }
-}
-
-function promptPlayerTwo() {
-  document.querySelector('input').value = "";
-
-  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
-
-  showForm();
 }
 
 function userDataSelection(event) {
@@ -212,6 +182,33 @@ var player;
   }
 
   document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function promptPlayerTwo() {
+  document.querySelector('input').value = "";
+
+  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
+
+  showForm();
+}
+
+function hideForm() {
+  for (i = 0; i < 3; i++){
+  document.querySelectorAll('.form-element')[i].classList.add('hidden');
+  }
+}
+
+function showForm() {
+  for (i = 0; i < 3; i++) {
+  document.querySelectorAll('.form-element')[i].classList.remove('hidden');
+  }
+}
+
+function showUserNames() {
+  h2 = document.querySelectorAll('h2');
+
+  h2[0].innerText = player1.name || player1;
+  h2[1].innerText = player2.name || player2;
 }
 
 //

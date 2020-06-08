@@ -30,6 +30,9 @@ h2 {
   margin: 0em 1.5em;
 }
 /* player forms */
+.start-game {
+  margin: 4em auto 0px auto;
+}
 .player-form {
   align-items: center;
   display: flex;
@@ -42,9 +45,7 @@ h2 {
 }
 
 button {
-  height: 2em;
   margin: .5em;
-  width: 3em;
 }
 /* card section */
 .playing-field {
