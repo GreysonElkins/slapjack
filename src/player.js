@@ -20,5 +20,3 @@ class Player {
     this.winCount = update.winCount;
   }
 }
-
-// module.exports = Player;

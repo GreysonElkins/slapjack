@@ -52,10 +52,10 @@ class Game {
   addWild() {
     var randomPlayerNumber = Math.floor(Math.random() * 2);
 
-    if (randomPlayerNumber === 1 && this.wildCard !=== undefined) {
+    if (randomPlayerNumber === 1 && this.wildCard !== undefined) {
       this.player1.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
-    } else if (this.wildCard !=== undefined) {
+    } else if (this.wildCard !== undefined) {
       this.player2.hand.push(this.wildCard);
       this.shuffle(this.player2.hand);
     }

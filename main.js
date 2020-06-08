@@ -79,7 +79,7 @@ function showCenterCard() {
     color = "#06D6A0";
   }
 
-  if (game.centerPile[0] !=== undefined) {
+  if (game.centerPile[0] !== undefined) {
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
@@ -87,7 +87,8 @@ function showCenterCard() {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  showOrHideHand(currentPlayer);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
 function removeCenterPile() {
@@ -95,15 +96,21 @@ function removeCenterPile() {
   pageCenterPile.innerHTML = "";
   }
 
-  showOrHideHand(currentPlayer);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
-function showOrHideHand(whichPlayer){
+function hideHand(whichPlayer){
   var hand = document.querySelector(`#player-${whichPlayer.id}`)
 
   if (whichPlayer.hand[0] === undefined) {
     hand.classList.add('hidden');
-  } else {
+  }
+}
+function showHand(whichPlayer) {
+  var hand = document.querySelector(`#player-${whichPlayer.id}`);
+
+  if (whichPlayer.hand[0] !== undefined) {
     hand.classList.remove('hidden');
   }
 }
@@ -126,7 +133,7 @@ function playerCardCount() {
 
     document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
 
-    showOrHideHand(game.findOpponent(currentPlayer));
+    hideHand(game.findOpponent(currentPlayer));
 }
 
 function findWinCount() {
