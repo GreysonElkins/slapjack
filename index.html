@@ -7,7 +7,7 @@
   <body>
     <header>
       <h1 class="hidden">Game Messages</h1>
-      <article class="start-game">
+      <section class="start-game">
         <h1>SlapJack</h1>
         <p> "Q" - Player 1 play card <br />
           "F"- Player 1 slap center pile <br />
@@ -17,7 +17,7 @@
           * The wild card changes trump to queens</p>
           <button id="start">START</button>
           <button id="make-new-players">MAKE NEW PLAYERS</button>
-      </article>
+      </section>
     </header>
     <section class="game-info">
       <h2 id="player-2-name"></h2>
@@ -25,33 +25,33 @@
         <p class="form-element hidden" id="direction">Enter Player 1's Name:</p>
         <input class="form-element hidden" id="input"/>
         <button class="form-element hidden" id="save-user">save</button>
-        <article class="old-user-msg hidden" id="user-msg">
+        <section class="old-user-msg hidden" id="user-msg">
           <p>Someone has played with that name before, would you like to use that player again?</p>
           <button id="yes">YES</button>
           <button id="no">NO</button>
-        </article>
+        </section>
       </section>
       <h2 id="player-2-name"></h2>
     </section>
     <section class="playing-field">
-      <article class="player-1-hand">
-        <img class="hidden" src="./assets/back.png" alt"a circle of lines, the back of the card" id="player-1"/>
-      </article>
-      <article class="center-pile">
-      </article>
-      <article class="player-2-hand">
-        <img class="hidden" src="./assets/back.png" alt"a circle of lines, the back of the card" id="player-2"/>
-      <article>
+      <section class="player-1">
+        <img class="hidden" src="./assets/back.png" alt="a circle of lines, the back of the card" id="player-1-hand"/>
+      </section>
+      <section class="center-pile">
+      </section>
+      <section class="player-2">
+        <img class="hidden" src="./assets/back.png" alt="a circle of lines, the back of the card" id="player-2-hand"/>
+      </section>
     </section>
     <section class="game-info">
-      <article class="player-1-info">
+      <section class="player-1-info">
         <p id="hand-1-count"></p>
         <p id="player-1-wins"></p>
-      </article>
-      <article class="player-2-info">
+      </section>
+      <section class="player-2-info">
         <p id="player-2-wins"></p>
         <p id="hand-2-count"></p>
-      </article>
+      </section>
     </section>
     <script src="./src/deck.js"></script>
     <script src="./src/player.js"></script>

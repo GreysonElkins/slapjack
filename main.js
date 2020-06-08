@@ -1,79 +1,81 @@
-var startSection = document.querySelector('.start-game');
+var startAppSection = document.querySelector('.start-game');
+var userForm = document.querySelector('.player-form');
 var pageCenterPile = document.querySelector('.center-pile');
-var playerForm = document.querySelector('.player-form');
 var h1 = document.querySelector('h1');
 
 var currentPlayer;
-var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
-var buttonPress = 0;
+var newPlayer1;
+var newPlayer2;
 
-startSection.addEventListener('click', startHandler);
-playerForm.addEventListener('click', formHandler);
-window.addEventListener('keydown', handleKeydown);
-
+startAppSection.addEventListener('click', startAppHandler);
+userForm.addEventListener('click', userFormHandler);
+window.addEventListener('keydown', handleGameKeyDown);
 
 //event handlers
-
-function startHandler(event) {
-  if (event.target.id == 'start') {
-    startUpGame();
-    startSection.classList.add('hidden');
-  } else if (event.target.id == 'make-new-players') {
+function startAppHandler(event) {
+  if (event.target.id === 'start') {
+    startGame();
+    startAppSection.classList.add('hidden');
+  } else if (event.target.id === 'make-new-players') {
     showForm();
-    startSection.classList.add('hidden');
-  }
-
-}
-
-function formHandler(event) {
-  if (event.target.id == "save-user") {
-    saveUser();
-  } else if (event.target.id == "yes" || event.target.id == "no") {
-    userDataSelection(event);
+    startAppSection.classList.add('hidden');
   }
 }
 
-function handleKeydown(event) {
+function handleGameKeyDown(event) {
   var keypress = event.which;
 
-  if (keypress == 81 || keypress == 70) {
+  if (keypress === 81 || keypress === 70) {
     currentPlayer = game.player1;
-  } else if (keypress == 80 || keypress == 74) {
+  } else if (keypress === 80 || keypress === 74) {
     currentPlayer = game.player2;
-  } else if (keypress == 66) {
+  } else if (keypress === 66) {
     game.addWild();
   }
   gameHandler(keypress);
 }
 
 function gameHandler(keypress) {
-  if (keypress == 81 || keypress == 80) {
+  if (keypress === 81 || keypress === 80) {
     hideGameMessage();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
     playerCardCount();
-  } else if (keypress == 70 || keypress == 74) {
+  } else if (keypress === 70 || keypress === 74) {
     game.slap(currentPlayer);
     removeCenterPile();
     textToScreen();
     playerCardCount();
   }
 }
+
+function userFormHandler(event) {
+  if (event.target.id === "save-user") {
+    checkUserInput();
+  } else if (event.target.id === "yes") {
+    yesSelectUser(event);
+  } else if (event.target.id === "no") {
+    noSelectUser(event);
+  }
+}
+
 //site set-up
-function startUpGame() {
+function startGame(firstplayer, secondplayer) {
+  var player1 = firstplayer || JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
+  var player2 = secondplayer || JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
+
   game = new Game(player1, player2);
   game.setGame();
   findWinCount();
   playerCardCount()
-  document.querySelector(`#player-1`).classList.remove('hidden');
-  document.querySelector(`#player-2`).classList.remove('hidden');
+  document.querySelector(`#player-1-hand`).classList.remove('hidden');
+  document.querySelector(`#player-2-hand`).classList.remove('hidden');
 }
-
+// gameplay
 function showCenterCard() {
   var color;
 
-  if (game.whoseTurn.id == "1") {
+  if (game.whoseTurn.id === "1") {
     color = "#EF476F";
   } else {
     color = "#06D6A0";
@@ -87,23 +89,31 @@ function showCenterCard() {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  showOrHideHand(currentPlayer);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
 function removeCenterPile() {
-  if (game.centerPile[0] == undefined) {
+  if (game.centerPile[0] === undefined) {
   pageCenterPile.innerHTML = "";
   }
 
-  showOrHideHand(currentPlayer);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
-function showOrHideHand(whichPlayer){
+function hideHand(whichPlayer){
   var hand = document.querySelector(`#player-${whichPlayer.id}`)
 
-  if (whichPlayer.hand[0] == undefined) {
+  if (whichPlayer.hand[0] === undefined) {
     hand.classList.add('hidden');
-  } else {
+  }
+}
+
+function showHand(whichPlayer) {
+  var hand = document.querySelector(`#player-${whichPlayer.id}`);
+
+  if (whichPlayer.hand[0] !== undefined) {
     hand.classList.remove('hidden');
   }
 }
@@ -120,13 +130,13 @@ function textToScreen() {
 function hideGameMessage() {
   h1.classList.add('hidden');
 }
-// user info
+// displaying user info
 function playerCardCount() {
     document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
 
     document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
 
-    showOrHideHand(game.findOpponent(currentPlayer));
+    hideHand(game.findOpponent(currentPlayer));
 }
 
 function findWinCount() {
@@ -135,51 +145,25 @@ function findWinCount() {
   var subject = player1;
 
   for (i = 1; i < 3; i++) {
-    if (i == 2) {
+    if (i === 2) {
       subject = player2;
     }
-    if (subject.winCount == 1) {
+    if (subject.winCount === 1) {
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Win`;
     } else {
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Wins`;
     }
   }
 }
-//user creation
-function saveUser() {
-  debugger
-  var inputValue = document.querySelector('input').value
+//user creation -"I finished this and now I'm wishing I had put these methods in the player class :(, maybe tomorrow"
+function checkUserInput() {
+  var userInputField = document.querySelector('input')
 
-  document.querySelector('input').value = "";
-  buttonPress++;
-
-  if (inputValue === "" && buttonPress == 1) {
-    player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
-    hideForm();
-    showUserNames();
-    startUpGame();
-  } else if (buttonPress == 1) {
-    player1 = inputValue;
-  }
-  if (checkForUser(player1) == false && buttonPress == 1) {
-    promptPlayerTwo();
-  }
-
-  if (inputValue == "" && buttonPress == 2) {
-    player2 = JSON.parse(localStorage.getItem("Player 1")) || "Player 2";
-    hideForm();
-    showUserNames();
-    startUpGame();
-  } else if (buttonPress == 2) {
-    player2 = inputValue;
-  }
-  if (checkForUser(player2) == false && buttonPress == 2) {
-      hideForm();
-      showUserNames();
-      startUpGame();
-  }
+  if (userInputField.value !== "" &&
+  checkForUser(userInputField.value) === false) {
+    saveNewUser(userInputField.value)
+    }
 }
-
 
 function checkForUser(input) {
   if (localStorage.getItem(input) !== null) {
@@ -192,38 +176,16 @@ function checkForUser(input) {
   }
 }
 
-function userDataSelection(event) {
-var player;
-
-  if (document.querySelector('#direction').innerText.includes('1')) {
-    player = player1;
-  } else {
-    player = player2;
-  }
-
-  if (event.target.id = "yes" && buttonPress == 1) {
-    player1 = JSON.parse(localStorage.getItem(player));
-    promptPlayerTwo();
-  } else if(event.target.id = "yes" && buttonPress == 2) {
-    player2 = JSON.parse(localStorage.getItem(player));
-    showUserNames();
-    startUpGame();
-  } else if (event.target.id = "no" && buttonPress == 1) {
-    promptPlayerTwo();
-  } else if (event.target.id = "no" && buttonPress == 2) {
-    player2 = document.querySelector('input').value;
-    startUpGame();
-  }
-
-  document.querySelector('.old-user-msg').classList.add('hidden');
-}
-
-function promptPlayerTwo() {
-  document.querySelector('input').value = "";
-
-  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
-
-  showForm();
+function saveNewUser(input) {
+    if (newPlayer1 === undefined) {
+      newPlayer1 = input;
+      promptPlayerTwo();
+    } else if (newPlayer2 === undefined) {
+      newPlayer2 = input;
+      hideForm();
+      showUserNames();
+      startGame(newPlayer1, newPlayer2);
+    }
 }
 
 function hideForm() {
@@ -241,8 +203,49 @@ function showForm() {
 function showUserNames() {
   h2 = document.querySelectorAll('h2');
 
-  h2[0].innerText = player1.name || player1;
-  h2[1].innerText = player2.name || player2;
+  h2[0].innerText = newPlayer1.name || newPlayer1;
+  h2[1].innerText = newPlayer2.name || newPlayer2;
+}
+// recalling previous custom user
+function determineFormUser(event) {
+  if (document.querySelector('#direction').innerText.includes('1')) {
+    return "player1";
+  } else {
+    return "player2";
+  }
 }
 
-//
+function yesSelectUser(event) {
+  var player = determineFormUser(event);
+  var userInputField = document.querySelector('input')
+
+  if (player === "player1") {
+    newPlayer1 = JSON.parse(localStorage.getItem(userInputField.value));
+    promptPlayerTwo();
+  } else if(player === "player2") {
+    newPlayer2 = JSON.parse(localStorage.getItem(userInputField.value));
+    showUserNames();
+    startGame();
+  }
+  document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function noSelectUser(){
+  var player = determineFormUser(event)
+
+  if (saveUserButtonPress == 1) {
+    promptPlayerTwo();
+  } else if (saveUserButtonPress == 2) {
+    player2 = document.querySelector('input').value;
+    startGame();
+  }
+  document.querySelector('.old-user-msg').classList.add('hidden');
+}
+
+function promptPlayerTwo() {
+  document.querySelector('input').value = "";
+
+  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
+
+  showForm();
+}

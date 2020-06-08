@@ -15,7 +15,8 @@ body {
 header {
   align-items: center;
   display: flex;
-  height: 15em;
+  height: 10em;
+  margin-bottom: 5em;
   justify-content: center;
 }
 
@@ -60,8 +61,8 @@ button {
 }
 
 .center-pile,
-.player-1-hand,
-.player-2-hand {
+.player-1,
+.player-2 {
   height: 32em;
   width: 18em;
 }
@@ -71,11 +72,11 @@ img {
   width: 18em;
 }
 
-.player-1-hand > img {
+.player-1 > img {
   box-shadow: 0 0 13px 0px #06D6A0;
 }
 
-.player-2-hand > img {
+.player-2 > img {
   box-shadow: 0 0 13px 0px #EF476F;
 }
 /* player info */
