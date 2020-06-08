@@ -1,17 +1,42 @@
 // var game = new Game();
 var pageCenterPile = document.querySelector('.center-pile')
+var playerForm = document.querySelector('.player-form')
+// var yesOrNo = document.getElementById('user-msg');
 var h1 = document.querySelector('h1');
+var buttonPress = 0;
 var currentPlayer;
+var player1 = "Player 1";
+var player2 = "Player 2";
+var game = new Game(player1, player2);
 
-window.onload = startUp();
-
-function startUp() {
-  // game.setGame();
-  recallStorage();
-  // playerCardCount();
-}
+// function startUp() {
+//   game.setGame();
+//   recallStorage();
+//   playerCardCount();
+//
+// }
 //event listener/handlers
 window.addEventListener('keydown', handleKeydown);
+playerForm.addEventListener('click', formHandler);
+
+
+
+function startUp() {
+  game = new Game(player1, player2);
+  game.setGame();
+  recallStorage();
+  document.querySelector(`#player-1`).classList.remove('hidden');
+  document.querySelector(`#player-2`).classList.remove('hidden');
+}
+
+function formHandler(event) {
+  if (event.target.id == "save-user") {
+    saveUser();
+  } else if (event.target.id == "yes" || event.target.id == "no") {
+    console.log("yup")
+    userDataSelection(event);
+  }
+}
 
 function handleKeydown(event) {
   var keypress = event.which;
@@ -108,4 +133,81 @@ function recallStorage() {
     document.getElementById(domWins).innerText = `${storage || 0} Wins`;
   }
 }
+//user creation
+function saveUser() {
+  var inputValue = document.querySelector('input').value
+  buttonPress++;
+
+  if (buttonPress == 1) {
+    player1 = inputValue;
+    if (checkForUser(player1) == false) {
+      promptPlayerTwo();
+  }
+  }
+  if (buttonPress == 2) {
+    player2 = inputValue;
+
+    document.querySelector('input').value = "";
+
+    showUserNames();
+    startUp();
+  }
+}
+
+function showUserNames() {
+  h2 = document.querySelectorAll('h2');
+
+  h2[0].innerText = player1.name || player1;
+  h2[1].innerText = player2.name || player2;
+}
+
+function hideForm() {
+  for (i = 0; i < 3; i++){
+  document.querySelectorAll('.form-element')[i].classList.add('hidden');
+  }
+}
+
+function showForm() {
+  for (i = 0; i < 3; i++) {
+  document.querySelectorAll('.form-element')[i].classList.remove('hidden');
+  }
+}
+
+function checkForUser(input) {
+  if (localStorage.getItem(input) !== null) {
+    document.querySelector('.old-user-msg').classList.remove('hidden');
+
+    hideForm();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function promptPlayerTwo() {
+  document.querySelector('input').value = "";
+
+  document.querySelector('#direction').innerText = "Enter Player 2's Name:"
+
+  showForm();
+}
+
+function userDataSelection(event) {
+console.log(event);
+var player;
+var identify = document.querySelector('input').value;
+  if (document.querySelector('#direction').innerText.includes('1')) {
+   player = player1;
+  } else {
+    player = player2;
+  }
+
+  if (event.target.id = "yes") {
+    player1 = JSON.parse(localStorage.getItem(player1));
+    promptPlayerTwo();
+  } else if (event.target.id = "no") {
+    promptPlayerTwo();
+  }
+}
+
 //

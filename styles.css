@@ -30,20 +30,20 @@ p {
 }
 
 h2 {
+  font-size: 2em;
   margin: 2em;
 }
 /* player forms */
 .player-form {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 18em;
 }
 .player-form > p {
   margin: .5em;
 }
-input {
 
-}
 button {
   height: 2em;
   margin: .5em;

@@ -1,7 +1,7 @@
 class Game {
-  constructor() {
-    this.player1 = new Player("Player 1", "1");
-    this.player2 = new Player("Player 1", "2");
+  constructor(name1, name2) {
+    this.player1 = new Player(name1, "1");
+    this.player2 = new Player(name2, "2");
     this.deck = [
       {type: "ace",
       suit: "blue",
@@ -236,14 +236,13 @@ class Game {
   }
 
   slap(player){
-    debugger
-    var takeMsg = `Player ${player.id} takes the pile!`
+    var takeMsg = `${player.name} takes the pile!`
     var topCard = this.centerPile[0].type;
     var trumpCard = "jack";
 
     if (this.centerPile.includes(this.wildCard)) {
       trumpCard = "queen"
-      takeMsg = `Player ${player.id} takes the wild Queen!`
+      takeMsg = `${player.name} takes the wild Queen!`
     }
 
     if (this.centerPile.length > 0 && topCard == trumpCard) {
@@ -258,7 +257,7 @@ class Game {
         this.message = `SANDWHICH! ${takeMsg}`;
         this.takePile(player);
     } else {
-      this.message = `BAD SLAP! Player ${player.id} foreits a card to Player ${this.findOpponent(player).id}!`;
+      this.message = `BAD SLAP! ${player.name} forfeits a card to ${this.findOpponent(player).name}!`;
       this.badPlay(player);
     }
   }
@@ -310,6 +309,6 @@ class Game {
     winner.winCount ++;
     winner.saveWinsToStorage();
     this.resetDeck();
-    this.message = `Player ${winner.id} wins!`;
+    this.message = `${winner.name} wins!`;
   }
 }
