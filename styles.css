@@ -15,8 +15,8 @@ body {
 header {
   align-items: center;
   display: flex;
-  height: 10em;
-  margin-bottom: 5em;
+  height: 7em;
+  margin-bottom: 4em;
   justify-content: center;
 }
 
@@ -28,7 +28,8 @@ h1 {
 
 h2 {
   font-size: 2em;
-  margin: 0em 1.5em;
+  text-align: center;
+  margin: 0em 0em .5em 0em;
 }
 /* player forms */
 .start-game {
@@ -43,11 +44,15 @@ h2 {
   align-items: center;
   display: flex;
   flex-direction: column;
+  margin: auto;
+  text-align: center;
   width: 9.5em;
 }
+
 .player-form > p {
   font-size: .9em;
-  margin: .5em;
+  margin: 0em;
+  text-align: center;
 }
 
 button {
@@ -57,48 +62,60 @@ button {
 .playing-field {
   display: flex;
   justify-content: space-around;
-  margin-top: 1.2em;
 }
 
 .center-pile,
 .player-1,
 .player-2 {
-  height: 32em;
-  width: 18em;
+  height: 30em;
+  width: 12em;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.center-pile {
+  height: 24.75em;
 }
 
 img {
-  border-radius: 30px;
-  width: 18em;
+  border-radius: 28px;
+  width: 12em;
 }
 
-.player-1 > img {
+.image1,
+.image2 {
+  height: 22em;
+  width: 12em;
+}
+
+.image1 > img {
   box-shadow: 0 0 13px 0px #06D6A0;
 }
 
-.player-2 > img {
+.image2 > img {
   box-shadow: 0 0 13px 0px #EF476F;
 }
 /* player info */
 .game-info {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 6em;
+  width: 49em;
 }
 
 .player-1-info,
 .player-2-info {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 10em;
-}
-
-.player-1-info {
-  padding-right: 41em;
+  flex-direction: column;
+  align-content: flex-start;
+  text-align: center;
 }
 
 p {
   font-size: 1.2em;
+  margin-block-start: 1em;
+  margin-block-end: 0em;
 }
 /* misc */
 .hidden {
