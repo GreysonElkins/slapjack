@@ -160,6 +160,7 @@ class Game {
       suit: "red",
       src: "./assets/red-king.png"},
     ];
+    //maybe we can put this in a different file?
     this.wildCard = {type: "wild",
     suit: "wild",
     src: "./assets/wild.png"};
@@ -167,6 +168,7 @@ class Game {
     this.whoseTurn = this.player1;
     this.message;
   }
+  
 //dealer functions
   shuffle(cards) {
     var howMany = cards.length
@@ -208,6 +210,8 @@ class Game {
 
   addWild() {
     var randomPlayerNumber = Math.floor(Math.random() * 2);
+    //Here you are assigning this variable above but then reassigning it below, not sure but I think you should be checking its value below?
+    //The output here will always be 1 or 0 so you may want to check if randomPlayerNumber is === to 1?
 
     if (randomPlayerNumber = 1 && this.wildCard !== undefined) {
       this.player1.hand.push(this.wildCard);
@@ -218,6 +222,7 @@ class Game {
     }
     this.wildCard = undefined;
   }
+
 //player moves
   movePlayersCard(player) {
     if (this.player1.hailMary && this.player2.hailMary) {

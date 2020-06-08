@@ -5,6 +5,7 @@ class Player {
     this.winCount = name.winCount || 0;
     this.hand = [];
     this.hailMary = false;
+    //This name could maybe describe a little more about what it represents 
   }
 
   playCard() {
@@ -21,3 +22,6 @@ class Player {
 }
 
 // module.exports = Player;
+//You can kill this ^^^^^
+
+//Looks fine in here!

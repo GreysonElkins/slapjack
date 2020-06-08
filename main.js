@@ -7,6 +7,8 @@ var currentPlayer;
 var player1 = JSON.parse(localStorage.getItem("Player 1")) || "Player 1";
 var player2 = JSON.parse(localStorage.getItem("Player 2")) || "Player 2";
 var buttonPress = 0;
+//instead of making 'buttonPress' global you could just keep it function scoped since you only use it in two functions. Reducing the number of global variables makes things easier to read as your app gets larger
+
 // var game = new Game(player1, player2);
 
 startSection.addEventListener('click', startHandler);
@@ -109,6 +111,8 @@ function showOrHideHand(whichPlayer){
     hand.classList.remove('hidden');
   }
 }
+//split this out into funtions one for show and one for hide
+
 // game messages
 function textToScreen() {
   h1.innerText = `${game.message}`;
@@ -138,6 +142,7 @@ function findWinCount() {
       subject = player2;
     }
     if (subject.winCount == 1) {
+      //Some of these double ='s could be changed to triple ='s since you want it to be strictly equal to 1 and not loosly equal to '1'
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Win`;
     } else {
       document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Wins`;
@@ -167,6 +172,7 @@ function saveUser() {
       startUpGame();
   }
 }
+//Would it possible to lose buttonPress and and just check the inputValue 
 
 
 function checkForUser(input) {
@@ -202,7 +208,10 @@ var player;
     player2 = document.querySelector('input').value;
     startUpGame();
   }
+  // should this be a single ='s? ^^^^
 
+
+  //maybe break this out into an other function ^^^ 
   document.querySelector('.old-user-msg').classList.add('hidden');
 }
 
