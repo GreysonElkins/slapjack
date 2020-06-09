@@ -8,7 +8,7 @@ SlapJack was built in Atom based on a static comp provided by the Turing School 
 ### Project Status
 ###
 
-The project has made it through each required iteration, and of those there's one small known bug. Extra features have been added as well, including the ability for a user to add a wild card to the playing field by pressing 'B', and the ability for users to create, save, and recall their own player names. This last feature has a lot of room for expansion.
+The project has made it through each required iteration. Extra features have been added as well, including the ability for a user to add a wild card to the playing field by pressing 'B', and the ability for users to create, save, and recall their own player names. This last feature has a lot of room for expansion.
 
 ### Website Screengrabs:
 ###
