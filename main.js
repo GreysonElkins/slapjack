@@ -5,6 +5,7 @@ var h1 = document.querySelector('h1');
 var userFormElements = document.querySelectorAll('.form-element')
 
 var game = new Game();
+var currentPlayer = game.whoseTurn
 
 startAppSection.addEventListener('click', startAppHandler);
 userForm.addEventListener('click', userFormHandler);
@@ -22,40 +23,35 @@ function startAppHandler(event) {
 }
 
 function handleGameKeyDown(event) {
-  if (game !== undefined) {
-    var keypress = event.which;
-  }
+  var keypress = event.which;
 
   if (keypress === 81 || keypress === 70) {
-    game.whoseTurn = game.player1;
+    currentPlayer = game.player1;
   } else if (keypress === 80 || keypress === 74) {
-    game.whoseTurn = game.player2;
+    currentPlayer = game.player2;
   } else if (keypress === 66) {
     game.addWild();
   }
 
-  if (game !== undefined) {
-    gameHandler(keypress);
-  }
+  gameHandler(keypress);
 }
 
 function gameHandler(keypress) {
-  if (keypress === 81 && game.whoseTurn === game.player1
-    || keypress === 80 && game.whoseTurn === game.player2) {
+  if (keypress === 81 && currentPlayer === game.player1
+    || keypress === 80 && currentPlayer === game.player2) {
       hideGameMessage();
       var color = determineCenterCardShadow()
-      game.movePlayersCard(game.whoseTurn);
+      game.movePlayersCard(currentPlayer);
       showCenterCard(color);
       showPlayerCardCount();
   } else if (keypress === 70 && game.centerPile[0] !== undefined
     || keypress === 74 && game.centerPile[0] !== undefined) {
-      game.slap(game.whoseTurn);
+      game.slap(currentPlayer);
       removeCenterPile();
       textToScreen();
       showPlayerCardCount();
   }
 }
-
 function userFormHandler(event) {
   if (event.target.id === 'save-user') {
     checkUserInput();
@@ -64,8 +60,6 @@ function userFormHandler(event) {
       createOrChooseUser(event);
   }
 }
-
-
 //site set-up
 function setMatchPage() {
   showUserNames();
@@ -80,7 +74,6 @@ function setUpPlayerData(playerName) {
   player = JSON.parse(localStorage.getItem(playerName)) || playerName;
   return player
 }
-
 // gameplay
 function showCenterCard(color) {
   if (game.centerPile[0] !== undefined) {
@@ -91,12 +84,12 @@ function showCenterCard(color) {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  hideHand(game.whoseTurn);
-  showHand(game.whoseTurn);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
 function determineCenterCardShadow() {
-  if (game.whoseTurn.id === '1') {
+  if (currentPlayer.id === '1') {
     return '#06D6A0';
   } else {
     return '#EF476F';
@@ -108,8 +101,8 @@ function removeCenterPile() {
   pageCenterPile.innerHTML = '';
   }
 
-  hideHand(game.whoseTurn);
-  showHand(game.whoseTurn);
+  hideHand(currentPlayer);
+  showHand(currentPlayer);
 }
 
 function hideHand(whichPlayer){
@@ -154,7 +147,7 @@ function showPlayerCardCount() {
     document.getElementById(`hand-${i}-count`).innerText = `${whichHand.length} cards`;
     }
   }
-  hideHand(game.findOpponent(game.whoseTurn));
+  hideHand(game.findOpponent(currentPlayer));
 }
 
 function showWinCount() {
