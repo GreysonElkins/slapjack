@@ -24,29 +24,32 @@ function startAppHandler(event) {
 }
 
 function handleGameKeyDown(event) {
-  var keypress = event.which;
-
-  if (keypress === 81 && game !== undefined
-    ||  keypress === 70 && game !== undefined) {
+  if (game !== undefined) {
+    var keypress = event.which;
+  }
+  if (keypress === 81
+    ||  keypress === 70) {
     currentPlayer = game.player1;
-  } else if (keypress === 80 && game !== undefined
-    ||  keypress === 74 && game !== undefined) {
+  } else if (keypress === 80
+    ||  keypress === 74) {
     currentPlayer = game.player2;
-  } else if (keypress === 66 && game !== undefined) {
+  } else if (keypress === 66) {
     game.addWild();
   }
-  gameHandler(keypress);
+  if (game !== undefined) {
+    gameHandler(keypress);
+  }
 }
 
 function gameHandler(keypress) {
-  if (keypress === 81 && game !== undefined
-    || keypress === 80 && game !== undefined) {
+  if (keypress === 81
+    || keypress === 80) {
     hideGameMessage();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
     playerCardCount();
-  } else if (keypress === 70 && game !== undefined && game.centerPile[0] !== undefined
-    || keypress === 74 && game !== undefined && game.centerPile[0] !== undefined) {
+  } else if (keypress === 70 && game.centerPile[0] !== undefined
+    || keypress === 74 && game.centerPile[0] !== undefined) {
     game.slap(currentPlayer);
     removeCenterPile();
     textToScreen();
