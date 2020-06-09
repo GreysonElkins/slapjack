@@ -152,7 +152,6 @@ class Game {
     }
     winner.winCount ++;
     winner.saveWinsToStorage();
-    // winner.retrieveFromStorage();
     this.resetDeck();
     this.message = `${winner.name} wins!`;
   }

@@ -2,7 +2,7 @@ class Player {
   constructor (id) {
     this.id = id;
     this.name = `Player ${this.id}`;
-    this.winCount = this.retrieveWinsFromStorage() || 0;
+    this.winCount = this.retrieveWinsFromStorage();
     this.hand = [];
     this.chanceToReenterGame = false;
   }
@@ -16,7 +16,13 @@ class Player {
   }
 
   retrieveWinsFromStorage() {
-    return JSON.parse(localStorage.getItem(this.name)).winCount;
+    var storedWins = JSON.parse(localStorage.getItem(this.name));
+
+    if (storedWins !== null) {
+      return storedWins.winCount
+    } else {
+      return 0;
+    }
   }
 
   saveCustomUser(name) {
