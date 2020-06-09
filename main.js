@@ -185,12 +185,14 @@ function checkUserInput() {
     player.saveCustomUser(userInputField)
   }
 
-  if (player.id === "1"
-  && checkStorageForCustomUser(userInputField) === false) {
-    promptPlayerTwo()
-  } else if (checkStorageForCustomUser(userInputField) === false){
-    hideUserInputForm();
-    setMatchPage();
+  if (userInputField !== ""
+    && player.id === "1"
+    && checkStorageForCustomUser(userInputField) === false) {
+      promptPlayerTwo()
+  } else if (userInputField !== ""
+    && checkStorageForCustomUser(userInputField) === false){
+      hideUserInputForm();
+      setMatchPage();
   }
 }
 
