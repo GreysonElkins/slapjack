@@ -45,8 +45,9 @@ function gameHandler(keypress) {
   if (keypress === 81
     || keypress === 80) {
     hideGameMessage();
+    var color = determineCenterCardShadow()
     game.movePlayersCard(currentPlayer);
-    showCenterCard();
+    showCenterCard(color);
     playerCardCount();
   } else if (keypress === 70 && game.centerPile[0] !== undefined
     || keypress === 74 && game.centerPile[0] !== undefined) {
@@ -87,9 +88,7 @@ function setUpPlayerData(playerName) {
 }
 
 // gameplay
-function showCenterCard() {
-  var color = determineCenterCardShadow();
-
+function showCenterCard(color) {
   if (game.centerPile[0] !== undefined) {
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
@@ -103,14 +102,10 @@ function showCenterCard() {
 }
 
 function determineCenterCardShadow() {
-  if (game.player1.chanceToReenterGame == true) {
-    return "#EF476F";
-  } if (game.player2.chanceToReenterGame == true) {
+  if (game.whoseTurn.id === "1") {
     return "#06D6A0";
-  } else if (game.whoseTurn.id === "1") {
-    return "#EF476F";
   } else {
-    return "#06D6A0";
+    return "#EF476F";
   }
 }
 
