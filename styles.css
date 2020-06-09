@@ -118,6 +118,10 @@ p {
   margin-block-end: 0em;
 }
 /* misc */
+.game-message {
+  margin-top: 1.5em;
+}
+
 .hidden {
   display: none;
 }
