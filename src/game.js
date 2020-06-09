@@ -1,7 +1,7 @@
 class Game {
-  constructor(name1, name2) {
-    this.player1 = new Player(name1, "1");
-    this.player2 = new Player(name2, "2");
+  constructor() {
+    this.player1 = new Player("1");
+    this.player2 = new Player("2");
     this.deck = deck;
     this.wildCard = {type: "wild",
     suit: "wild",
@@ -152,7 +152,6 @@ class Game {
     }
     winner.winCount ++;
     winner.saveWinsToStorage();
-    winner.retrieveFromStorage();
     this.resetDeck();
     this.message = `${winner.name} wins!`;
   }
