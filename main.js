@@ -1,5 +1,7 @@
 var startAppSection = document.querySelector('.start-game');
 var userForm = document.querySelector('.player-form');
+var pageCenterPile = document.querySelector('.center-pile');
+var h1 = document.querySelector('h1');
 
 var currentPlayer;
 var newPlayer1;
@@ -95,7 +97,7 @@ function showCenterCard() {
   }
 
   if (game.centerPile[0] !== undefined) {
-  document.querySelector('.center-pile').innerHTML =
+  pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
     ${game.centerPile[0].type}" id="center-card" />`;
 
@@ -108,7 +110,7 @@ function showCenterCard() {
 
 function removeCenterPile() {
   if (game.centerPile[0] === undefined) {
-  document.querySelector('.center-pile').innerHTML = "";
+  pageCenterPile.innerHTML = "";
   }
 
   hideHand(currentPlayer);
@@ -132,8 +134,6 @@ function showHand(whichPlayer) {
 }
 // game messages
 function textToScreen() {
-  var h1 = document.querySelector('h1');
-
   h1.innerText = `${game.message}`;
   h1.classList.remove('hidden');
 
@@ -143,7 +143,7 @@ function textToScreen() {
 }
 
 function hideGameMessage() {
-  document.querySelector('h1').classList.add('hidden');
+  h1.classList.add('hidden');
 }
 // displaying user info
 function playerCardCount() {
