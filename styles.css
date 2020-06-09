@@ -54,6 +54,9 @@ h2 {
   margin: 0em;
   text-align: center;
 }
+.old-user-msg > p {
+  width: 19em;
+}
 
 button {
   margin: .5em;
