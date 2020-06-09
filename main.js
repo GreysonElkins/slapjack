@@ -37,8 +37,8 @@ function handleGameKeyDown(event) {
 }
 
 function gameHandler(keypress) {
-  if (keypress === 81 && currentPlayer === game.player1
-    || keypress === 80 && currentPlayer === game.player2) {
+  if (keypress === 81 && game.whoseTurn === game.player1
+    || keypress === 80 && game.whoseTurn === game.player2) {
       hideGameMessage();
       var color = determineCenterCardShadow()
       game.movePlayersCard(currentPlayer);
