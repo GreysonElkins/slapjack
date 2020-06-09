@@ -50,7 +50,6 @@ class Game {
   }
 
   addWild() {
-      debugger
     var randomPlayerNumber = Math.floor(Math.random() * 2);
 
     if (randomPlayerNumber === 1 &&
@@ -81,7 +80,6 @@ class Game {
   }
 
   slap(player){
-    debugger
     var takeMsg = `${player.name} takes the pile!`
     var topCard = this.centerPile[0].type;
     var trumpCard = "jack";
