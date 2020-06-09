@@ -84,8 +84,8 @@ function showCenterCard(color) {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  hideHand(currentPlayer);
-  showHand(currentPlayer);
+  determineHandVisibility(currentPlayer);
+
 }
 
 function determineCenterCardShadow() {
@@ -101,25 +101,19 @@ function removeCenterPile() {
   pageCenterPile.innerHTML = '';
   }
 
-  hideHand(currentPlayer);
-  showHand(currentPlayer);
+  determineHandVisibility(currentPlayer);
 }
 
-function hideHand(whichPlayer){
+function determineHandVisibility(whichPlayer){
   var hand = document.querySelector(`#player-${whichPlayer.id}-hand`)
 
   if (whichPlayer.hand[0] === undefined) {
     hand.classList.add('hidden');
-  }
-}
-
-function showHand(whichPlayer) {
-  var hand = document.querySelector(`#player-${whichPlayer.id}-hand`);
-
-  if (whichPlayer.hand[0] !== undefined) {
+  } else {
     hand.classList.remove('hidden');
   }
 }
+
 // game messages
 function textToScreen() {
   h1.innerText = `${game.message}`;
@@ -147,7 +141,7 @@ function showPlayerCardCount() {
     document.getElementById(`hand-${i}-count`).innerText = `${whichHand.length} cards`;
     }
   }
-  hideHand(game.findOpponent(currentPlayer));
+  determineHandVisibility(game.findOpponent(currentPlayer));
 }
 
 function showWinCount() {
