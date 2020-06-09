@@ -4,7 +4,6 @@ var pageCenterPile = document.querySelector('.center-pile');
 var h1 = document.querySelector('h1');
 var userFormElements = document.querySelectorAll('.form-element')
 
-var currentPlayer;
 var game = new Game();
 
 startAppSection.addEventListener('click', startAppHandler);
@@ -28,9 +27,9 @@ function handleGameKeyDown(event) {
   }
 
   if (keypress === 81 || keypress === 70) {
-    currentPlayer = game.player1;
+    game.whoseTurn = game.player1;
   } else if (keypress === 80 || keypress === 74) {
-    currentPlayer = game.player2;
+    game.whoseTurn = game.player2;
   } else if (keypress === 66) {
     game.addWild();
   }
@@ -41,16 +40,16 @@ function handleGameKeyDown(event) {
 }
 
 function gameHandler(keypress) {
-  if (keypress === 81 && game.whoseTurn === "1"
-    || keypress === 80 && game.whoseTurn === "2") {
+  if (keypress === 81 && game.whoseTurn === game.player1
+    || keypress === 80 && game.whoseTurn === game.player2) {
       hideGameMessage();
       var color = determineCenterCardShadow()
-      game.movePlayersCard(currentPlayer);
+      game.movePlayersCard(game.whoseTurn);
       showCenterCard(color);
       showPlayerCardCount();
   } else if (keypress === 70 && game.centerPile[0] !== undefined
     || keypress === 74 && game.centerPile[0] !== undefined) {
-      game.slap(currentPlayer);
+      game.slap(game.whoseTurn);
       removeCenterPile();
       textToScreen();
       showPlayerCardCount();
@@ -92,8 +91,8 @@ function showCenterCard(color) {
   document.getElementById('center-card').style.boxShadow= `0 0 13px 0px ${color}`;
   }
 
-  hideHand(currentPlayer);
-  showHand(currentPlayer);
+  hideHand(game.whoseTurn);
+  showHand(game.whoseTurn);
 }
 
 function determineCenterCardShadow() {
@@ -109,8 +108,8 @@ function removeCenterPile() {
   pageCenterPile.innerHTML = '';
   }
 
-  hideHand(currentPlayer);
-  showHand(currentPlayer);
+  hideHand(game.whoseTurn);
+  showHand(game.whoseTurn);
 }
 
 function hideHand(whichPlayer){
@@ -155,7 +154,7 @@ function showPlayerCardCount() {
     document.getElementById(`hand-${i}-count`).innerText = `${whichHand.length} cards`;
     }
   }
-  hideHand(game.findOpponent(currentPlayer));
+  hideHand(game.findOpponent(game.whoseTurn));
 }
 
 function showWinCount() {
