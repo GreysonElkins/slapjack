@@ -88,13 +88,7 @@ function setUpPlayerData(playerName) {
 
 // gameplay
 function showCenterCard() {
-  var color;
-
-  if (game.whoseTurn.id === "1") {
-    color = "#EF476F";
-  } else {
-    color = "#06D6A0";
-  }
+  var color = determineCenterCardShadow();
 
   if (game.centerPile[0] !== undefined) {
   pageCenterPile.innerHTML =
@@ -106,6 +100,18 @@ function showCenterCard() {
 
   hideHand(currentPlayer);
   showHand(currentPlayer);
+}
+
+function determineCenterCardShadow() {
+  if (game.player1.chanceToReenterGame == true) {
+    return "#EF476F";
+  } if (game.player2.chanceToReenterGame == true) {
+    return "#06D6A0";
+  } else if (game.whoseTurn.id === "1") {
+    return "#EF476F";
+  } else {
+    return "#06D6A0";
+  }
 }
 
 function removeCenterPile() {
