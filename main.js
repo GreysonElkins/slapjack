@@ -6,6 +6,7 @@ var h1 = document.querySelector('h1');
 var currentPlayer;
 var newPlayer1;
 var newPlayer2;
+var game;
 
 startAppSection.addEventListener('click', startAppHandler);
 userForm.addEventListener('click', userFormHandler);
@@ -25,23 +26,27 @@ function startAppHandler(event) {
 function handleGameKeyDown(event) {
   var keypress = event.which;
 
-  if (keypress === 81 || keypress === 70) {
+  if (keypress === 81 && game !== undefined
+    ||  keypress === 70 && game !== undefined) {
     currentPlayer = game.player1;
-  } else if (keypress === 80 || keypress === 74) {
+  } else if (keypress === 80 && game !== undefined
+    ||  keypress === 74 && game !== undefined) {
     currentPlayer = game.player2;
-  } else if (keypress === 66) {
+  } else if (keypress === 66 && game !== undefined) {
     game.addWild();
   }
   gameHandler(keypress);
 }
 
 function gameHandler(keypress) {
-  if (keypress === 81 || keypress === 80) {
+  if (keypress === 81 && game !== undefined
+    || keypress === 80 && game !== undefined) {
     hideGameMessage();
     game.movePlayersCard(currentPlayer);
     showCenterCard();
     playerCardCount();
-  } else if (keypress === 70 || keypress === 74) {
+  } else if (keypress === 70 && game !== undefined && game.centerPile[0] !== undefined
+    || keypress === 74 && game !== undefined && game.centerPile[0] !== undefined) {
     game.slap(currentPlayer);
     removeCenterPile();
     textToScreen();
