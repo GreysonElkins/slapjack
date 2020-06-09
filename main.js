@@ -2,6 +2,7 @@ var startAppSection = document.querySelector('.start-game');
 var userForm = document.querySelector('.player-form');
 var pageCenterPile = document.querySelector('.center-pile');
 var h1 = document.querySelector('h1');
+var userFormElements = document.querySelectorAll('.form-element')
 
 var currentPlayer;
 var newPlayer1;
@@ -27,15 +28,15 @@ function handleGameKeyDown(event) {
   if (game !== undefined) {
     var keypress = event.which;
   }
-  if (keypress === 81
-    ||  keypress === 70) {
+
+  if (keypress === 81 || keypress === 70) {
     currentPlayer = game.player1;
-  } else if (keypress === 80
-    ||  keypress === 74) {
+  } else if (keypress === 80 || keypress === 74) {
     currentPlayer = game.player2;
   } else if (keypress === 66) {
     game.addWild();
   }
+
   if (game !== undefined) {
     gameHandler(keypress);
   }
@@ -44,33 +45,34 @@ function handleGameKeyDown(event) {
 function gameHandler(keypress) {
   if (keypress === 81
     || keypress === 80) {
-    hideGameMessage();
-    game.movePlayersCard(currentPlayer);
-    showCenterCard();
-    playerCardCount();
+      hideGameMessage();
+      var color = determineCenterCardShadow()
+      game.movePlayersCard(currentPlayer);
+      showCenterCard(color);
+      playerCardCount();
   } else if (keypress === 70 && game.centerPile[0] !== undefined
     || keypress === 74 && game.centerPile[0] !== undefined) {
-    game.slap(currentPlayer);
-    removeCenterPile();
-    textToScreen();
-    playerCardCount();
+      game.slap(currentPlayer);
+      removeCenterPile();
+      textToScreen();
+      playerCardCount();
   }
 }
 
 function userFormHandler(event) {
-  if (event.target.id === "save-user") {
+  if (event.target.id === 'save-user') {
     checkUserInput();
-  } else if (event.target.id === "yes") {
+  } else if (event.target.id === 'yes') {
     yesSelectUser(event);
-  } else if (event.target.id === "no") {
+  } else if (event.target.id === 'no') {
     noSelectUser(event);
   }
 }
 
 //site set-up
 function startGame(firstplayer, secondplayer) {
-  var player1 = firstplayer || setUpPlayerData("Player 1")
-  var player2 = secondplayer || setUpPlayerData("Player 2")
+  var player1 = firstplayer || setUpPlayerData('Player 1')
+  var player2 = secondplayer || setUpPlayerData('Player 2')
 
   game = new Game(player1, player2);
   showUserNames();
@@ -87,15 +89,7 @@ function setUpPlayerData(playerName) {
 }
 
 // gameplay
-function showCenterCard() {
-  var color;
-
-  if (game.whoseTurn.id === "1") {
-    color = "#EF476F";
-  } else {
-    color = "#06D6A0";
-  }
-
+function showCenterCard(color) {
   if (game.centerPile[0] !== undefined) {
   pageCenterPile.innerHTML =
     `<img src="${game.centerPile[0].src}" alt="${game.centerPile[0].suit}
@@ -108,9 +102,17 @@ function showCenterCard() {
   showHand(currentPlayer);
 }
 
+function determineCenterCardShadow() {
+  if (game.whoseTurn.id === '1') {
+    return '#06D6A0';
+  } else {
+    return '#EF476F';
+  }
+}
+
 function removeCenterPile() {
   if (game.centerPile[0] === undefined) {
-  pageCenterPile.innerHTML = "";
+  pageCenterPile.innerHTML = '';
   }
 
   hideHand(currentPlayer);
@@ -147,37 +149,43 @@ function hideGameMessage() {
 }
 // displaying user info
 function playerCardCount() {
-    document.getElementById('hand-1-count').innerText = `${game.player1.hand.length} cards`;
-
-    document.getElementById('hand-2-count').innerText = `${game.player2.hand.length} cards`;
-
-    hideHand(game.findOpponent(currentPlayer));
-}
-
-function findWinCount() {
-  player1 = game.player1
-  player2 = game.player2
-  var subject = player1;
+  var whichHand = game.player1.hand;
 
   for (i = 1; i < 3; i++) {
     if (i === 2) {
-      subject = player2;
+      whichHand = game.player2.hand;
     }
-    if (subject.winCount === 1) {
-      document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Win`;
+    if (whichHand.length === 1) {
+    document.getElementById(`hand-${i}-count`).innerText = `${whichHand.length} card`;
     } else {
-      document.getElementById(`player-${i}-wins`).innerText = `${subject.winCount || 0} Wins`;
+    document.getElementById(`hand-${i}-count`).innerText = `${whichHand.length} cards`;
+    }
+  }
+  hideHand(game.findOpponent(currentPlayer));
+}
+
+function findWinCount() {
+  var whichPlayer = game.player1;
+
+  for (i = 1; i < 3; i++) {
+    if (i === 2) {
+      whichPlayer = game.player2;
+    }
+    if (whichPlayer.winCount === 1) {
+      document.getElementById(`player-${i}-wins`).innerText = `${whichPlayer.winCount || 0} Win`;
+    } else {
+      document.getElementById(`player-${i}-wins`).innerText = `${whichPlayer.winCount || 0} Wins`;
     }
   }
 }
-//user creation -"I finished this and now I'm wishing I had put these methods in the player class :(, maybe tomorrow"
+//user creation -"I finished this and now I'm wishing I had put these methods in the player class :("
 function checkUserInput() {
   var userInputField = document.querySelector('input')
 
   if (userInputField.value !== "" &&
   checkForUser(userInputField.value) === false) {
     saveNewUser(userInputField.value)
-    }
+  }
 }
 
 function checkForUser(input) {
@@ -192,25 +200,25 @@ function checkForUser(input) {
 }
 
 function saveNewUser(input) {
-    if (newPlayer1 === undefined) {
-      newPlayer1 = input;
-      promptPlayerTwo();
-    } else if (newPlayer2 === undefined) {
-      newPlayer2 = input;
-      hideForm();
-      startGame(newPlayer1, newPlayer2);
-    }
+  if (newPlayer1 === undefined) {
+    newPlayer1 = input;
+    promptPlayerTwo();
+  } else if (newPlayer2 === undefined) {
+    newPlayer2 = input;
+    hideForm();
+    startGame(newPlayer1, newPlayer2);
+  }
 }
 
 function hideForm() {
   for (i = 0; i < 3; i++){
-  document.querySelectorAll('.form-element')[i].classList.add('hidden');
+    userFormElements[i].classList.add('hidden');
   }
 }
 
 function showForm() {
   for (i = 0; i < 3; i++) {
-  document.querySelectorAll('.form-element')[i].classList.remove('hidden');
+    userFormElements[i].classList.remove('hidden');
   }
 }
 
